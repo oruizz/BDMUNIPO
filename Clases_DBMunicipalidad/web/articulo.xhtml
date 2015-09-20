@@ -1,0 +1,293 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+                <h:outputText value="Articulo" styleClass="subtitulocabecera"/>
+                <p:tabView id="tabArticulo">
+                    <p:tab id="tab1" title="Presentacion">                  
+                        <h:form>
+                            <p:growl id="growl" showDetail="true"/>
+                            <p:fieldset legend="#{msg.descripcion}" toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl"/>
+                            </p:fieldset>
+                        </h:form>                    
+                    </p:tab>
+
+
+                    <p:tab id="tab2" title="Registrar Articulo">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                            <h:form id="registrar">
+                                <p:panel id="nuevo_articulo" header="Datos Del Articulo">
+                                    <p:growl sticky="true" showDetail="true"/>
+                                    <h:panelGrid columns="1">
+
+                                        <h:outputLabel for="nombre_articulo" value="(*)Nombre Del Articulo"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bArticulo.articulo_a.nombre_articulo}" id="nombre_articulo" required="true" title="Máximo 40 Caracteres" >
+                                                <f:validateLength minimum="2" maximum="40"/>
+                                            </p:inputText>                                                   
+                                            <p:tooltip for="nombre_articulo" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="nombre_articulo" display="icon"/>
+                                        </h:panelGroup>
+
+                                        <h:outputLabel for="marca_articulo" value="(*)Marca Articulo" />                            
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bArticulo.articulo_a.marca_articulo}" id="marca_articulo" required="true" title="Maximo 60 Caracteres">
+                                                <f:validateLength minimum="2" maximum="60" />  
+                                            </p:inputText> 
+                                            <p:tooltip for="marca_articulo" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="marca_articulo" display="icon" />                                          
+                                        </h:panelGroup>    
+
+                                        <h:outputLabel for="descripcion_articulo" value="(*)Descripcion Articulo" />                            
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bArticulo.articulo_a.descripcion_articulo}" id="descripcion_articulo" required="true" title="Maximo 50 Caracteres">
+                                                <f:validateLength minimum="2" maximum="50" />  
+                                            </p:inputText> 
+                                            <p:tooltip for="descripcion_articulo" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="descripcion_articulo" display="icon" />                                          
+                                        </h:panelGroup>  
+
+
+                                        <h:outputLabel for="cantidad_articulo" value="(*)Cantidad Articulo"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bArticulo.articulo_a.cantidad_articulo}" id="cantidad_articulo"  title="Ingrese Cantidad"  required="true" >       
+                                            </p:inputText>
+                                            <p:tooltip for="cantidad_articulo" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="cantidad_articulo" display="icon"/>
+                                        </h:panelGroup>
+
+                                        <h:outputLabel for="tipo_articulo" value="(*)Tipo Articulo" />                            
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bArticulo.articulo_a.tipo_material}" id="tipo_articulo" required="true" title="Maximo 50 Caracteres">
+                                                <f:validateLength minimum="1" maximum="50" />
+                                            </p:inputText> 
+                                            <p:tooltip for="tipo_articulo" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="tipo_articulo" display="icon" />                                          
+                                        </h:panelGroup>    
+
+                                        <h:outputLabel for="precio_articulo" value="(*)Precio Articulo" />                            
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bArticulo.articulo_a.precio_articulo}" id="precio_articulo" required="true" title="Ingrese Precio">
+
+                                            </p:inputText> 
+                                            <p:tooltip for="precio_articulo" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="precio_articulo" display="icon" />                                          
+                                        </h:panelGroup>    
+
+
+
+                                        <p:commandButton value="Registrar" id="saveArticulo" actionListener="#{bArticulo.doregistra_articulo}" update="nuevo_articulo"/>     
+                                    </h:panelGrid> 
+
+                                </p:panel>
+
+                            </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+                    <!--LISTAR ARTICULO-->                
+                    <p:tab id="tabListado" title="#{msg.listar}">                            
+                        <p:growl sticky="true" showDetail="true"/><!--MUESTRA MENSAJE DE ERROR-->
+                        <h:form id="form_listar">
+                            <p:panel id="listar_articulo" header="#{msg.listaarticulo}">
+                                <p:dataTable id="articuloTable" var="ar" value="#{bArticulo.cargarArticulo}" emptyMessage="#{msg.articulovacias}" resizableColumns="true" paginator="true" rows="5" rowsPerPageTemplate="10,15,20">
+                                    <f:facet name="header">  
+                                        Lista De Articulos  
+                                    </f:facet> 
+                                    <p:column sortBy="#{ar.cod_articulo}"  filterBy="#{ar.cod_articulo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Codigo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{ar.cod_articulo}"/>
+                                    </p:column>      
+                                    <p:column sortBy="#{ar.nombre_articulo}"  filterBy="#{ar.nombre_articulo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre"/>
+                                        </f:facet>
+                                        <h:outputText value="#{ar.nombre_articulo}"/>
+                                    </p:column> 
+
+                                    <p:column sortBy="#{ar.marca_articulo}"  filterBy="#{ar.marca_articulo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Marca"/>
+                                        </f:facet>
+                                        <h:outputText value="#{ar.marca_articulo}"/>
+                                    </p:column> 
+
+                                    <p:column sortBy="#{ar.descripcion_articulo}"  filterBy="#{ar.descripcion_articulo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Descripcion"/>
+                                        </f:facet>
+                                        <h:outputText value="#{ar.descripcion_articulo}"/>
+                                    </p:column> 
+
+                                    <p:column sortBy="#{ar.cantidad_articulo}"  filterBy="#{ar.cantidad_articulo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Cantidad"/>
+                                        </f:facet>
+                                        <h:outputText value="#{ar.cantidad_articulo}"/>
+                                    </p:column> 
+
+                                    <p:column sortBy="#{ar.tipo_material}"  filterBy="#{ar.tipo_material}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Tipo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{ar.tipo_material}"/>
+                                    </p:column> 
+
+                                    <p:column sortBy="#{ar.precio_articulo}"  filterBy="#{ar.precio_articulo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Precio"/>
+                                        </f:facet>
+                                        <h:outputText value="#{ar.precio_articulo}"/>
+                                    </p:column> 
+
+                                    <p:column style="width: 4%">
+                                        <p:commandButton id="selectButton" icon="ui-icon-search" title="Detalles" update=":tabArticulo:form_listar:displayar" oncomplete="arDialog.show()">
+                                            <f:setPropertyActionListener value="#{ar}" target="#{bArticulo.selectedArticulo}"/>                                            
+                                        </p:commandButton>
+
+                                    </p:column> 
+                                </p:dataTable>
+
+                                <p:panel header="Exportar Todos los Datos">
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png"/>
+                                        <p:dataExporter type="xls" target="articuloTable" fileName="articulos"/>
+                                    </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png"/>
+                                        <p:dataExporter type="pdf" target="articuloTable" fileName="articulos"/>
+                                    </h:commandLink>
+                                </p:panel>
+                                <p:dialog header="Detalle Del Articulo" widgetVar="arDialog" resizable="false" id="arDlg" showEffect="fade" hideEffect="explode" modal="false">
+                                    <h:panelGrid id="displayar" columns="2" cellpadding="4" style="margin: 0 auto;">
+                                        <h:outputText value="Codigo Articulo:"/>
+                                        <h:outputText value="#{bArticulo.selectedArticulo.cod_articulo}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Articulo:"/>
+                                        <h:outputText value="#{bArticulo.selectedArticulo.nombre_articulo}" style="font-weight: bold"/>
+                                        <h:outputText value="Marca Articulo:"/>
+                                        <h:outputText value="#{bArticulo.selectedArticulo.marca_articulo}" style="font-weight: bold"/>
+                                        <h:outputText value="Descripcion Articulo:"/>
+                                        <h:outputText value="#{bArticulo.selectedArticulo.descripcion_articulo}" style="font-weight: bold"/>
+                                        <h:outputText value="Cantidad Articulo:"/>
+                                        <h:outputText value="#{bArticulo.selectedArticulo.cantidad_articulo}" style="font-weight: bold"/>
+                                        <h:outputText value="Tipo Articulo:"/>
+                                        <h:outputText value="#{bArticulo.selectedArticulo.tipo_material}" style="font-weight: bold"/>
+                                        <h:outputText value="Precio Articulo:"/>
+                                        <h:outputText value="#{bArticulo.selectedArticulo.precio_articulo}" style="font-weight: bold"/>
+                                        
+                                        
+                                        
+                                    </h:panelGrid>
+                                </p:dialog>                                          
+                            </p:panel>
+                        </h:form>
+                    </p:tab><!-- FIN LISTADO -->
+                    <p:tab id="tabEditar" title="#{msg.editar}"> 
+                        <p:growl sticky="true"  showDetail="true"/>
+                        <h:form id="form_editar2">                 
+                            <p:panel id="editar_articulo" header="Edicion Articulo">                 
+                                <p:dataTable id="articuloTableEdit2"   widgetVar="articuloTableEdit2"
+                                             var="art" value="#{bArticulo.cargarArticulo}" paginator="true" 
+                                             rows="5"       editable="true"             
+                                             emptyMessage="No Articulos encontrados"
+                                             rowsPerPageTemplate="10,15,20" 
+                                             resizableColumns="true"
+                                             >                                                          
+                                    <p:column headerText="Codigo" footerText="Codigo" sortBy="#{art.cod_articulo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{art.cod_articulo}" />
+                                    </p:column>
+
+                                    <p:column headerText="Nombre" footerText="Nombre" sortBy="#{art.nombre_articulo}" filterBy="#{art.nombre_articulo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{art.nombre_articulo}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Marca" footerText="Marca" sortBy="#{art.marca_articulo}" filterBy="#{art.marca_articulo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{art.marca_articulo}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Descripcion" footerText="Descripcion" sortBy="#{art.descripcion_articulo}" filterBy="#{art.descripcion_articulo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{art.descripcion_articulo}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Cantidad" footerText="Cantidad" sortBy="#{art.cantidad_articulo}" filterBy="#{art.cantidad_articulo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{art.cantidad_articulo}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Tipo" footerText="Tipo" sortBy="#{art.tipo_material}" filterBy="#{art.tipo_material}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{art.tipo_material}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Precio" footerText="Precio" sortBy="#{art.precio_articulo}" filterBy="#{art.precio_articulo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{art.precio_articulo}" />
+
+                                    </p:column>
+
+
+                                    <p:column style="width:4%" headerText="Opcion" >  
+                                        <p:commandButton id="selectButton2" update=":tabArticulo:form_actualizar:actualizar_Articulo2" oncomplete="empDialog2.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{art}" target="#{bArticulo.selectedArticulo}" />  
+                                        </p:commandButton>  
+                                    </p:column>
+                                </p:dataTable>
+                            </p:panel>
+                        </h:form>
+                        <h:form id="form_actualizar">                              
+                            <p:dialog header="Actualizando Articulo" widgetVar="empDialog2" resizable="false" id="empDlg2"  
+                                      showEffect="fade" hideEffect="explode" modal="false">    
+                                <p:panel id="actualizar_Articulo2"> 
+                                    <p:growl sticky="true"  showDetail="true"/>                  
+                                    <h:panelGrid columns="2" cellpadding="4" style="margin:0 auto;">   
+                                        <h:outputText value="Codigo Articulo:" />  
+                                        <p:inputText value="#{bArticulo.selectedArticulo.cod_articulo}" style="font-weight:bold" required="true"/>    
+                                        <h:outputText value="Nombre Articulo:" />  
+                                        <p:inputText value="#{bArticulo.selectedArticulo.nombre_articulo}" style="font-weight:bold" required="true">
+                                            <f:validateLength minimum="2" maximum="40"/>
+                                        </p:inputText>
+                                        <h:outputText value="Marca Articulo:" />  
+                                        <p:inputText value="#{bArticulo.selectedArticulo.marca_articulo}" style="font-weight:bold" required="true">
+                                            <f:validateLength minimum="2" maximum="60"/>
+                                        </p:inputText>
+                                        
+                                        <h:outputText value="Descripcion Articulo:" />  
+                                        <p:inputText value="#{bArticulo.selectedArticulo.descripcion_articulo}" style="font-weight:bold" required="true">
+                                            <f:validateLength minimum="2" maximum="50"/>
+                                        </p:inputText>
+                                        
+                                        <h:outputText value="Cantidad Articulo:" />  
+                                        <p:inputText value="#{bArticulo.selectedArticulo.cantidad_articulo}" style="font-weight:bold" required="true"/>
+                                        
+                                        <h:outputText value="Tipo Articulo:" />  
+                                        <p:inputText value="#{bArticulo.selectedArticulo.tipo_material}" style="font-weight:bold" required="true">
+                                            <f:validateLength minimum="2" maximum="50" />
+                                        </p:inputText>
+                                        
+                                        <h:outputText value="Precio Articulo:" />  
+                                        <p:inputText value="#{bArticulo.selectedArticulo.precio_articulo}" style="font-weight:bold" required="true"/>
+                                        
+                                        <p:commandButton  value="Actualizar" id="updatearticulo" actionListener="#{bArticulo.doActualizarArticulo()}" update="actualizar_Articulo2" />
+                                    </h:panelGrid>                      
+                                </p:panel>
+                            </p:dialog>                  
+                        </h:form>
+                    </p:tab>
+
+                </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

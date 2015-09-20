@@ -1,0 +1,281 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+                <h:outputText value="Empresa" styleClass="subtitulocabecera" />
+                <p:tabView id="tabEmpresa">
+                    <p:tab id="tab1" title="Presentacion">                  
+                        <h:form>
+                            <p:growl id="growl" showDetail="true"/>
+                            <p:fieldset legend="#{msg.descripcion}" toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl"/>
+                                <h:outputLabel value="Empresas"/>
+                            </p:fieldset>
+                        </h:form>                    
+                    </p:tab>
+
+
+                    <p:tab id="tab2" title="Registrar Empresa">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                            <h:form id="registrar">
+                                <p:panel id="nueva_empresa" header="Datos De La Empresa">
+                                    <p:growl sticky="true" showDetail="true"/>
+                                    <h:panelGrid >
+                                        <!--NOMBRE EMPRESA-->
+                                        <h:outputLabel for="nombre_empresa" value="(*)Nombre De La Empresa"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bEmpresa.empresa_a.nombre_empresa}" id="nombre_empresa" required="true" title="Máximo 50 Caracteres" >
+                                                <f:validateLength minimum="2" maximum="50"/>
+
+                                            </p:inputText>                                                   
+                                            <p:tooltip for="nombre_empresa" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="nombre_empresa" display="icon"/>
+
+                                        </h:panelGroup>
+                                        <!--RUC EMPRESA-->
+                                        <h:outputLabel for="ruc_empresa" value="(*)Ruc De La Empresa"/>
+                                        <h:panelGroup>
+                                            <p:inputMask id="ruc_empresa" value="#{bEmpresa.empresa_a.ruc_empresa}" mask="99999999999" title="Formato:00000000000" required="true" size="13"/>
+                                            <p:tooltip for="ruc_empresa" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="ruc_empresa" display="icon"/>
+                                        </h:panelGroup>
+                                        <!--TELEFONO EMPRESA-->
+                                        <h:outputLabel for="telefono_empresa" value="(*)Telefono De La Empresa"/>
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bEmpresa.empresa_a.telefono_empresa}" id="telefono_empresa" mask="99-99-99" title="Formato:00-00-00" required="true" size="10">       
+                                            </p:inputMask>
+                                            <p:tooltip for="telefono_empresa" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="telefono_empresa" display="icon"/>
+                                        </h:panelGroup>
+                                        <!--DIRECCION EMPRESA-->
+                                        <h:outputLabel for="direccion_empresa" value="(*)Direccion De La Empresa"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bEmpresa.empresa_a.direccion_empresa}" id="direccion_empresa" title="Escriba aqui la direccion">       
+                                                <f:validateLength minimum="2" maximum="60"/>
+
+                                            </p:inputText>
+                                            <p:tooltip for="direccion_empresa" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="direccion_empresa" display="icon"/>
+                                        </h:panelGroup>
+
+
+                                        <h:outputText value="(*) Estado Empresa " /> 
+                                        <p:selectOneMenu value="#{bEmpresa.empresa_a.estado_empresa}" style="width: 150px;">  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" />
+                                            <f:selectItem itemLabel="1 - NO VIGENTE" itemValue="1" /> 
+                                            <f:selectItem itemLabel="0 - VIGENTE" itemValue="0" />  
+
+
+                                        </p:selectOneMenu>
+
+                                        <p:commandButton value="Registrar" id="saveEmpresa" actionListener="#{bEmpresa.doregistra_empresa}" update="nueva_empresa"/>     
+                                    </h:panelGrid> 
+
+                                </p:panel>
+
+                            </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+                    <!--LISTAR EMPRESA-->                
+                    <p:tab id="tabListado" title="#{msg.listar}">                            
+                        <p:growl sticky="true" showDetail="true"/><!--MUESTRA MENSAJE DE ERROR-->
+                        <h:form id="form_listar">
+                            <p:panel id="listar_empresa" header="#{msg.listaemp}">
+                                <p:dataTable id="empresaTable" var="emp" value="#{bEmpresa.cargarEmpresa}" emptyMessage="#{msg.empresasvacia}" paginator="true" rows="5" rowsPerPageTemplate="10,15,20">
+                                    <f:facet name="header">  
+                                        Lista De Empresas  
+                                    </f:facet> 
+                                    <p:column sortBy="#{emp.cod_empresa}"  filterBy="#{emp.cod_empresa}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Codigo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{emp.cod_empresa}"/>
+                                    </p:column>      
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Ruc"/>
+                                        </f:facet>
+                                        <h:outputText value="#{emp.ruc_empresa}"/>
+                                    </p:column>  
+                                    <p:column sortBy="#{emp.nombre_empresa}"  filterBy="#{emp.nombre_empresa}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre"/>
+                                        </f:facet>
+                                        <h:outputText value="#{emp.nombre_empresa}"/>
+                                    </p:column> 
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Telefono"/>
+                                        </f:facet>
+                                        <h:outputText value="#{emp.telefono_empresa}"/>
+                                    </p:column> 
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Direccion"/>
+                                        </f:facet>
+                                        <h:outputText value="#{emp.direccion_empresa}"/>
+                                    </p:column> 
+
+                                    <p:column> 
+                                        <f:facet name="header">
+                                            <h:outputText value="Estado" />
+                                        </f:facet>
+                                        <h:outputText value="#{emp.estado_empresa}" /> 
+                                    </p:column>
+
+                                    <p:column style="width: 4%">
+                                        <p:commandButton id="selectButton" icon="ui-icon-search" title="Detalles De Las Empresas" update=":tabEmpresa:form_listar:displayemp" oncomplete="empDialog.show()">
+                                            <f:setPropertyActionListener value="#{emp}" target="#{bEmpresa.selectedEmpresa}"/>                                            
+                                        </p:commandButton>
+
+                                    </p:column> 
+                                </p:dataTable>
+
+                                <p:panel header="Exportar Todos Los Datos">
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png"/>
+                                        <p:dataExporter type="xls" target="empresaTable" fileName="Empresas"/>
+                                    </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png"/>
+                                        <p:dataExporter type="pdf" target="empresaTable" fileName="Empresas"/>
+                                    </h:commandLink>
+                                </p:panel>
+
+                                <p:dialog header="Detalle De La Empresa" widgetVar="empDialog" resizable="false" id="empDlg" showEffect="fade" hideEffect="explode" modal="false">
+                                    <h:panelGrid id="displayemp" columns="2" cellpadding="4" style="margin: 0 auto;">
+                                        <h:outputText value="Codigo De La Empresa:"/>
+                                        <h:outputText value="#{bEmpresa.selectedEmpresa.cod_empresa}" style="font-weight: bold"/>
+                                        <h:outputText value="Ruc De La Empresa:"/>
+                                        <h:outputText value="#{bEmpresa.selectedEmpresa.ruc_empresa}" style="font-weight: bold"/>
+
+
+                                        <h:outputText value="Nombre De La Empresa:"/>
+                                        <h:outputText value="#{bEmpresa.selectedEmpresa.nombre_empresa}" style="font-weight: bold"/>
+                                        <h:outputText value="Telefono De La Empresa:"/>
+                                        <h:outputText value="#{bEmpresa.selectedEmpresa.telefono_empresa}" style="font-weight: bold"/>
+                                        <h:outputText value="Direccion De La Empresa:"/>
+                                        <h:outputText value="#{bEmpresa.selectedEmpresa.direccion_empresa}" style="font-weight: bold"/>
+                                        <h:outputText value="Estado De La Empresa:"/>
+                                        <h:outputText value="#{bEmpresa.selectedEmpresa.estado_empresa}" style="font-weight: bold"/>
+                                    </h:panelGrid>
+                                </p:dialog>                                          
+                            </p:panel>
+                        </h:form>
+                    </p:tab><!-- FIN LISTADO -->
+                    <p:tab id="tabEditar" title="#{msg.editar}"> 
+                        <p:growl sticky="true"  showDetail="true"/>
+
+
+                        <h:form id="form_editar2">                 
+                            <p:panel id="editar_empresa" header="Edicion Empresas">                 
+                                <p:dataTable id="empresaTableEdit2"   widgetVar="empresaTableEdit2"
+                                             var="emp" value="#{bEmpresa.cargarEmpresa}" paginator="true" 
+                                             rows="5"       editable="true"             
+                                             emptyMessage="No Empresas encontradas"
+                                             rowsPerPageTemplate="10,15,20" 
+                                             resizableColumns="true"
+                                             >                                                          
+                                    <p:column headerText="Codigo Empresa" footerText="Codigo Empresa" sortBy="#{emp.cod_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{emp.cod_empresa}" />
+                                    </p:column>
+                                    <p:column headerText="Ruc Empresa" footerText="Ruc Empresa" sortBy="#{emp.ruc_empresa}" filterBy="#{emp.ruc_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{emp.ruc_empresa}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Nombre Empresa" footerText="Nombre Empresa" sortBy="#{emp.nombre_empresa}" filterBy="#{emp.nombre_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{emp.nombre_empresa}" />
+                                    </p:column>               
+
+                                    <p:column headerText="Telefono Empresa" footerText="Telefono Empresa" sortBy="#{emp.telefono_empresa}" filterBy="#{emp.telefono_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{emp.telefono_empresa}" />
+                                    </p:column> 
+
+                                    <p:column  headerText="Direccion Empresa" footerText="Direccion Empresa" sortBy="#{emp.direccion_empresa}" filterBy="#{emp.direccion_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{emp.direccion_empresa}" />
+                                    </p:column>  
+
+                                    <p:column  headerText="Estado Empresa" footerText="Estado Empresa" sortBy="#{emp.estado_empresa}" filterBy="#{emp.estado_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{emp.estado_empresa}" />
+                                    </p:column>  
+
+
+
+                                    <p:column style="width:4%" headerText="Opcion" >  
+                                        <p:commandButton id="selectButton2" update=":tabEmpresa:form_actualizar:actualizar_empresa2" oncomplete="empDialog2.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{emp}" target="#{bEmpresa.selectedEmpresa}" />  
+                                        </p:commandButton>  
+                                    </p:column>                   
+                                </p:dataTable>
+                            </p:panel>
+                        </h:form>
+
+                        <h:form id="form_actualizar">                              
+                            <p:dialog header="Actualizando Empresa" widgetVar="empDialog2" resizable="false" id="empDlg2"  
+                                      showEffect="fade" hideEffect="explode" modal="false">    
+                                <p:panel id="actualizar_empresa2"> 
+                                    <p:growl sticky="true"  showDetail="true"/>                  
+                                    <h:panelGrid columns="2" cellpadding="4" style="margin:0 auto;">   
+                                      
+                                        <h:outputText value="Codigo Empresa:" />  
+                                        <p:inputText value="#{bEmpresa.selectedEmpresa.cod_empresa}" style="font-weight:bold" required="true" />    
+                                 
+
+                                        <h:outputLabel for="ruc_empresa" value="(*)Ruc De La Empresa"/>
+                                        <h:panelGroup>
+                                            <p:inputMask id="ruc_empresa" value="#{bEmpresa.selectedEmpresa.ruc_empresa}" mask="99999999999" title="Formato:00000000000" required="true" size="13" style="font-weight:bold"/>
+                                            <p:tooltip for="ruc_empresa" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="ruc_empresa" display="icon"/>
+                                        </h:panelGroup>
+
+
+                                        <h:outputText value="Nombre Empresa:" />  
+                                        <p:inputText value="#{bEmpresa.selectedEmpresa.nombre_empresa}" style="font-weight:bold" required="true"> 
+                                            <f:validateLength minimum="2" maximum="50"/>
+                                        </p:inputText>
+
+                                        <h:outputLabel for="telefono_empresa" value="(*)Telefono De La Empresa"/>
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bEmpresa.selectedEmpresa.telefono_empresa}" id="telefono_empresa" mask="99-99-99" title="Formato:00-00-00" required="true" size="10" style="font-weight:bold">       
+                                            </p:inputMask>
+                                            <p:tooltip for="telefono_empresa" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="telefono_empresa" display="icon"/>
+                                        </h:panelGroup>
+
+
+                                        <h:outputText value="Direccion Empresa:" />  
+                                        <p:inputText value="#{bEmpresa.selectedEmpresa.direccion_empresa}" style="font-weight:bold" required="true"> 
+                                            <f:validateLength minimum="2" maximum="60"/>
+                                        </p:inputText>
+
+                                        <h:outputText value="Estado Empresa" /> 
+                                        <p:selectOneMenu value="#{bEmpresa.selectedEmpresa.estado_empresa}" style="width: 150px;" required="true">  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+
+                                            <f:selectItem itemLabel="0 - VIGENTE" itemValue="0" />  
+                                            <f:selectItem itemLabel="1 - NO VIGENTE" itemValue="1" /> 
+
+                                        </p:selectOneMenu> 
+
+                                        <p:commandButton  value="Actualizar" id="updateEmpresa" actionListener="#{bEmpresa.doActualizarEmpresa}" update="actualizar_empresa2" />
+                                    </h:panelGrid>                      
+                                </p:panel>
+                            </p:dialog>                  
+                        </h:form>      
+
+
+                    </p:tab>
+                </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

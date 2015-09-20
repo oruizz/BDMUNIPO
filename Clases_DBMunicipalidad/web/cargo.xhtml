@@ -1,0 +1,150 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+               <h:outputText value="Cargo" styleClass="subtitulocabecera"/> 
+               <p:tabView id="tabCargo">
+                    <p:tab id="tab1" title="Presentacion">                  
+                        <h:form>
+                            <p:growl id="growl" showDetail="true"/>
+                            <p:fieldset legend="#{msg.descripcion}" toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl"/>
+                            </p:fieldset>
+                        </h:form>                    
+                    </p:tab>
+                   
+                   <p:tab id="tab2" title="Registrar Cargo">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                                <h:form id="registrar">
+                                    <p:panel id="nuevo_cargo" header="Datos Del Cargo">
+                                        <p:growl sticky="true" showDetail="true"/>
+                                        <h:panelGrid colummns="2">
+                                            <!--NOMBRE CARGO-->
+                                            <h:outputLabel for="desc_cargo" value="(*)Descipcion de cargo"/>
+                                            <h:panelGroup>
+                                                <p:inputText value="#{bCargo.cargo_a.descripcion_cargo}" id="desc_cargo" required="true" title="Máximo 50 Caracteres" >
+                                                    <f:validateLength minimum="2" maximum="50"/>
+                                                </p:inputText>                                                   
+                                                <p:tooltip for="desc_cargo" showEvent="focus" hideEvent="blur" />
+                                                <p:message for="desc_cargo" display="icon"/>
+                                            </h:panelGroup>
+                                            <p:commandButton value="Registrar" id="saveCargo" actionListener="#{bCargo.doRegistraCargo()}" update="nuevo_cargo"/>     
+                                        </h:panelGrid> 
+                                                
+                                    </p:panel>
+                                   
+                                </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+                   <!--LISTANDO CARGO-->
+                    <p:tab id="tabListado" title="#{msg.listar}">                            
+                        <p:growl sticky="true" showDetail="true"/><!--MUESTRA MENSAJE DE ERROR-->
+                        <h:form id="form_listar">
+                            <p:panel id="listar_cargo" header="#{msg.listarcargo}">
+                                <p:dataTable id="cargoTable" var="car" value="#{bCargo.cargarCargo}" emptyMessage="#{msg.cargovacio}" paginator="true" rows="5" rowsPerPageTemplate="10,15,20">
+                                    <f:facet name="header">  
+                                             Lista De Cargos  
+                                    </f:facet> 
+                                    <p:column sortBy="#{car.id_cargo}"  filterBy="#{car.id_cargo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Id"/>
+                                        </f:facet>
+                                        <h:outputText value="#{car.id_cargo}"/>
+                                    </p:column>      
+                                    <p:column sortBy="#{car.descripcion_cargo}"  filterBy="#{car.descripcion_cargo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Descripcion"/>
+                                        </f:facet>
+                                        <h:outputText value="#{car.descripcion_cargo}"/>
+                                    </p:column> 
+                                    <p:column style="width: 4%">
+                                        <p:commandButton id="selectButton" icon="ui-icon-search" title="Detalles" update=":tabCargo:form_listar:displaycar" oncomplete="carDialog.show()">
+                                            <f:setPropertyActionListener value="#{car}" target="#{bCargo.selectedCargo}"/>                                            
+                                        </p:commandButton>
+                                       
+                                    </p:column> 
+                                </p:dataTable>
+                                
+                                <p:panel header="Exportar Todos los Datos">
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png"/>
+                                        <p:dataExporter type="xls" target="cargoTable" fileName="Cargos"/>
+                                    </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png"/>
+                                        <p:dataExporter type="pdf" target="cargoTable" fileName="Cargos"/>
+                                    </h:commandLink>
+                                </p:panel>
+                                <p:dialog header="Detalle Del Cargo" widgetVar="carDialog" resizable="false" id="carDlg" showEffect="fade" hideEffect="explode" modal="false">
+                                    <h:panelGrid id="displaycar" columns="2" cellpadding="4" style="margin: 0 auto;">
+                                        <h:outputText value="Id:"/>
+                                        <h:outputText value="#{bCargo.selectedCargo.id_cargo}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre:"/>
+                                        <h:outputText value="#{bCargo.selectedCargo.descripcion_cargo}" style="font-weight: bold"/>
+                                    </h:panelGrid>
+                                </p:dialog>                                          
+                            </p:panel>
+                        </h:form>
+                     </p:tab>
+                   
+                   <p:tab id="tabEditar" title="#{msg.editar}">
+                   <p:growl sticky="true"  showDetail="true"/>
+                            <h:form id="form_editar2">                 
+                            <p:panel id="editar_cargo" header="Edicion Cargo Forma 02 ">                 
+                                <p:dataTable id="cargoTableEdit2"   widgetVar="cargoTableEdit2"
+                                             var="car" value="#{bCargo.cargarCargo}" paginator="true" 
+                                             rows="5"       editable="true"             
+                                             emptyMessage="No Empresas encontradas"
+                                             rowsPerPageTemplate="10,15,20" 
+                                             resizableColumns="true"
+                                             >                                                          
+                                    <p:column headerText="Id_cargo" footerText="Id_cargo" sortBy="#{car.id_cargo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{car.id_cargo}" />
+                                    </p:column>
+                                    <p:column headerText="Nombre" footerText="Nombre" sortBy="#{car.descripcion_cargo}" filterBy="#{car.descripcion_cargo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{car.descripcion_cargo}" />
+
+                                    </p:column>
+                                    <p:column style="width:4%" headerText="Opcion" >  
+                                        <p:commandButton id="selectButton2" update=":tabCargo:form_actualizar:actualizar_cargo2" oncomplete="empDialog2.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{car}" target="#{bCargo.selectedCargo}" />  
+                                        </p:commandButton>  
+                                    </p:column>
+                                    </p:dataTable>
+                            </p:panel>
+                        </h:form>
+                         <h:form id="form_actualizar">                              
+                                    <p:dialog header="Actualizando Cargo" widgetVar="empDialog2" resizable="false" id="empDlg2"  
+                                            showEffect="fade" hideEffect="explode" modal="false">    
+                                        <p:panel id="actualizar_cargo2"> 
+                                            <p:growl sticky="true"  showDetail="true"/>                  
+                                            <h:panelGrid columns="2" cellpadding="4" style="margin:0 auto;">   
+                                                <h:outputText value="Id_cargo:" />  
+                                                <p:inputText value="#{bCargo.selectedCargo.id_cargo}" style="font-weight:bold" required="true" />    
+                                                <h:outputText value="Nombre:" />  
+                                                <p:inputText value="#{bCargo.selectedCargo.descripcion_cargo}" style="font-weight:bold" required="true">
+                                                    <f:validateLength minimum="2" maximum="50"/>
+                                                </p:inputText>
+
+                                                <p:commandButton  value="Actualizar" id="updateCargo" actionListener="#{bCargo.doActualizarCargo()}" update="actualizar_cargo2" />
+                                            </h:panelGrid>                      
+                                        </p:panel>
+                                    </p:dialog>                  
+                           </h:form> 
+                       
+                   </p:tab>
+                   
+               </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

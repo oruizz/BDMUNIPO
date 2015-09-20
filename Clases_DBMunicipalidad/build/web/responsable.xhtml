@@ -1,0 +1,363 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p= "http://primefaces.org/ui"
+      xmlns:ui= "http://java.sun.com/jsf/facelets"
+      >
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+                <h:outputText value="Responsable"  styleClass="subtitulocabecera"/>
+                <p:tabView id="tabResponsable">
+                    <p:tab id="tab1" title="Presentacion">
+                        <h:form>   
+                            <p:growl id="growl" showDetail="true" />    
+                            <p:fieldset legend="Observacion" toggleable="true" toggleSpeed="500">  
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl" />  
+                                <h:panelGrid columns="1" cellpadding="10">              
+                                    <h:panelGroup>
+                                        <h:outputText value="Responsable"/>
+                                    </h:panelGroup>        
+                                </h:panelGrid>  
+                            </p:fieldset>    
+                        </h:form>
+                    </p:tab>
+
+                    <p:tab id="tab2" title="Registrar Responsable">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                            <h:form id="registrar">
+                                <p:panel id="nuevo_responsable" header="Datos Del Responsable">
+                                    <p:growl sticky="true" showDetail="true"/>
+                                    <h:panelGrid columns="1">
+
+                                        <h:outputLabel for="nombre_responsable" value="(*)Nombre Del Responsable"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bResponsable.responsable_a.nombre_responsable}" id="nombre_responsable" required="true" title="Máximo 30 Caracteres" >
+                                                <f:validateLength minimum="2" maximum="40"/>
+                                            </p:inputText>                                                   
+                                            <p:tooltip for="nombre_responsable" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="nombre_responsable" display="icon"/>
+                                        </h:panelGroup>
+
+
+                                        <h:outputLabel for="apellido_responsable" value="(*)Apellido Responsable"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bResponsable.responsable_a.apellido_responsable}" id="apellido_responsable" title="Maximo 40 Caracteres">       
+                                            </p:inputText>
+                                            <p:tooltip for="apellido_responsable" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="apellido_responsable" display="icon"/>
+                                        </h:panelGroup>
+
+
+                                        <h:outputText value="Sexo Responsable " /> 
+                                        <p:selectOneMenu value="#{bResponsable.responsable_a.sexo_responsable}">  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                            <f:selectItem itemLabel="Masculino" itemValue="Masculino" />  
+                                            <f:selectItem itemLabel="Femenino" itemValue="Femenino" />  
+                                        </p:selectOneMenu>  
+
+                                        <h:outputLabel for="edad_responsable" value="Edad Responsable" />                            
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bResponsable.responsable_a.edad_responsable}" mask="99" id="edad_responsable"  title="Ingrese Edad"/>
+                                            <p:tooltip for="edad_responsable" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="edad_responsable" display="icon"/>                                          
+                                        </h:panelGroup>  
+
+
+                                        <h:outputLabel for="celular" value="(*)Celular"/>
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bResponsable.responsable_a.celular_responsable}" id="celular"  mask="(99)999-9999" title="Ingrese Celular" required="true" size="13">       
+                                            </p:inputMask>
+                                            <p:tooltip for="celular" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="celular" display="icon"/>
+                                        </h:panelGroup>
+
+                                        <h:outputLabel for="direccion_responsable" value="(*)Direccion Responsable"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bResponsable.responsable_a.direccion_responsable}" id="direccion_responsable" title="Maximo 40 Caracteres">       
+                                            </p:inputText>
+                                            <p:tooltip for="direccion_responsable" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="direccion_responsable" display="icon"/>
+                                        </h:panelGroup>
+
+                                        <h:outputText value="Estado Responsable" /> 
+                                        <p:selectOneMenu value="#{bResponsable.responsable_a.responsable_estado}">  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                            <f:selectItem itemLabel="0 - ACTIVO" itemValue="0" />  
+                                            <f:selectItem itemLabel="1 - NO ACTIVO" itemValue="1" />  
+                                        </p:selectOneMenu>  
+
+                                        <h:outputLabel for="Cargo" value="(*)Cargo"/>
+                                        <h:panelGroup>
+                                            <p:selectOneMenu value="#{bResponsable.responsable_a.obj_car.id_cargo}"  panelStyle="width:250px"  effect="fade" style="width:160px"  required="true" id="car_cargo">  
+                                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                <f:selectItems value="#{bCargo.cargarComboCargo}" var="variable" itemLabel="#{variable.descripcion_cargo}" itemValue="#{variable.id_cargo}" />                
+
+                                            </p:selectOneMenu>  
+
+                                            <p:tooltip for="car_cargo" showEvent="focus" hideEvent="blur" />              
+                                            <p:growl  for="car_cargo" showDetail="true" />    
+                                        </h:panelGroup>
+
+                                        <p:commandButton value="Registrar" id="saveResponsable" actionListener="#{bResponsable.doregistra_responsable()}" update="nuevo_responsable"/>     
+
+                                    </h:panelGrid> 
+                                </p:panel>
+
+                            </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+
+
+
+
+                    <p:tab id="tabListado" title="#{msg.listar}" >
+                        <p:growl sticky="true"  showDetail="true"/>
+                        <h:form id="form_listar">
+                            <p:panel id="listar_responsable" header="Listando responsables">
+                                <p:dataTable id="responsableTable" var="res" value="#{bResponsable.cargarResponsable}" paginator="true" rows="5" emptyMessage="No Responsable encontrados" rowsPerPageTemplate="10,15,20" resizableColumns="true">
+                                    <f:facet name="header">  
+                                        Lista de Responsables 
+                                    </f:facet>
+                                    <p:column sortBy="#{res.cod_responsable}"  >  
+                                        <f:facet name="header">  
+                                            <h:outputText value="CODIGO" />  
+                                        </f:facet>
+                                        <h:outputText value="#{res.cod_responsable}" />
+                                    </p:column>
+                                    <p:column sortBy="#{res.nombre_responsable}"  filterMatchMode="contains">  
+                                        <f:facet name="header">  
+                                            <h:outputText value="NOMBRE" />  
+                                        </f:facet>
+                                        <h:outputText value="#{res.nombre_responsable}" />
+                                    </p:column>
+                                    <p:column sortBy="#{res.apellido_responsable}"  filterMatchMode="contains">  
+                                        <f:facet name="header">  
+                                            <h:outputText value="APELLIDO" />  
+                                        </f:facet>
+                                        <h:outputText value="#{res.apellido_responsable}" />
+                                    </p:column>
+                                    <p:column sortBy="#{res.sexo_responsable}"  filterMatchMode="contains">  
+                                        <f:facet name="header">  
+                                            <h:outputText value="SEXO" />  
+                                        </f:facet>
+                                        <h:outputText value="#{res.sexo_responsable}" />
+                                    </p:column>
+
+                                    <p:column sortBy="#{res.edad_responsable}"  filterMatchMode="contains">  
+                                        <f:facet name="header">  
+                                            <h:outputText value="EDAD" />  
+                                        </f:facet>
+                                        <h:outputText value="#{res.edad_responsable}" />
+                                    </p:column>
+
+                                    <p:column sortBy="#{res.direccion_responsable}"  filterMatchMode="contains">  
+                                        <f:facet name="header">  
+                                            <h:outputText value="DIRECCION" />  
+                                        </f:facet>
+                                        <h:outputText value="#{res.direccion_responsable}" />
+                                    </p:column>
+                                    <p:column sortBy="#{res.responsable_estado}"  filterMatchMode="contains">  
+                                        <f:facet name="header">  
+                                            <h:outputText value="ESTADO" />  
+                                        </f:facet>
+                                        <h:outputText value="#{res.responsable_estado}" />
+                                    </p:column>
+                                    <p:column >  
+                                        <f:facet name="header">  
+                                            <h:outputText value="CARGO" />  
+                                        </f:facet>
+                                        <h:outputText value="#{res.obj_car.descripcion_cargo}" />
+                                    </p:column>
+                                    <p:column exportable="false" style="width:4%" >  
+                                        <p:commandButton id="selectButton" update=":tabResponsable:form_listar:displayres" oncomplete="resDialog.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{res}" target="#{bResponsable.selectedResponsable}" />  
+                                        </p:commandButton>  
+                                    </p:column> 
+                                </p:dataTable>
+                                <p:panel header="Exportar Todos los Datos">  
+                                    <h:commandLink>  
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png" />  
+                                        <p:dataExporter type="xls" target="responsableTable" fileName="responsable" />  
+                                    </h:commandLink>    
+                                    <h:commandLink>  
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png" />  
+                                        <p:dataExporter type="pdf" target="responsableTable" fileName="responsable"/>  
+                                    </h:commandLink>           
+
+                                </p:panel> 
+                                <p:dialog header="Detalle responsable" widgetVar="resDialog" resizable="false" id="resDlg"  
+                                          showEffect="fade" hideEffect="explode" modal="false">    
+                                    <h:panelGrid id="displayres" columns="2" cellpadding="4" style="margin:0 auto;">   
+                                        <h:outputText value="Codigo:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.cod_responsable}" style="font-weight:bold"/>    
+                                       
+                                        <h:outputText value="Nombres:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.nombre_responsable}" style="font-weight:bold"> 
+                                           
+                                        </h:outputText>
+                                        
+                                        <h:outputText value="Apellidos:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.apellido_responsable}" style="font-weight:bold"/>                        
+                                        <h:outputText value="sexo:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.sexo_responsable}" style="font-weight:bold"/>   
+
+                                        <h:outputText value="Edad:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.edad_responsable}" style="font-weight:bold"/>   
+                                        <h:outputText value="Celular:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.celular_responsable}" style="font-weight:bold"/>
+                                        <h:outputText value="Direccion:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.direccion_responsable}" style="font-weight:bold"/>
+                                        <h:outputText value="Estado:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.responsable_estado}" style="font-weight:bold"/>    
+                                        <h:outputText value="Cargo:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.obj_car.id_cargo}" style="font-weight:bold"/>
+                                        <h:outputText value="Descripcion Cargo:" />  
+                                        <h:outputText value="#{bResponsable.selectedResponsable.obj_car.descripcion_cargo}" style="font-weight:bold"/>  
+                                    </h:panelGrid>    
+                                </p:dialog> 
+                            </p:panel>
+                        </h:form>
+                    </p:tab>
+
+                    <p:tab id="tabEdicion" title="#{msg.editar}" > 
+                        <h:form id="form_editar2">                 
+                            <p:panel id="editar_responsable2" header="Edicion Responsable">                 
+                                <p:dataTable id="responsableTableEdit2"   widgetVar="responsableTableEdit2"
+                                             var="resp" value="#{bResponsable.cargarResponsable}" paginator="true" 
+                                             rows="5"       editable="true"             
+                                             emptyMessage="No Responsables encontrados"
+                                             rowsPerPageTemplate="10,15,20" 
+                                             resizableColumns="true"
+                                             >                                                          
+                                    <p:column headerText="Codigo" footerText="Codigo" sortBy="#{resp.cod_responsable}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{resp.cod_responsable}" />
+
+                                    </p:column>
+                                    <p:column headerText="Nombres" footerText="Nombres" sortBy="#{resp.nombre_responsable}" filterBy="#{resp.nombre_responsable}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{resp.nombre_responsable}" />
+                                    </p:column>
+                                    <p:column headerText="Apellidos" footerText="Apellidos" sortBy="#{resp.apellido_responsable}" filterBy="#{resp.apellido_responsable}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{resp.apellido_responsable}" />
+                                    </p:column>
+                                    <p:column headerText="sexo" footerText="sexo" sortBy="#{resp.sexo_responsable}" filterBy="#{resp.sexo_responsable}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{resp.sexo_responsable}" />
+                                    </p:column>
+
+                                    <p:column headerText="Edad" footerText="Edad" sortBy="#{resp.edad_responsable}" filterBy="#{resp.edad_responsable}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{resp.edad_responsable}" />
+                                    </p:column>
+
+                                    <p:column headerText="celular" footerText="celular" sortBy="#{resp.celular_responsable}" filterBy="#{resp.celular_responsable}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{resp.celular_responsable}" />
+                                    </p:column>
+                                    <p:column headerText="Direccion" footerText="Direccion" sortBy="#{resp.direccion_responsable}" filterBy="#{resp.direccion_responsable}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{resp.direccion_responsable}" />
+                                    </p:column>
+                                    <p:column headerText="Estado" footerText="Estado" sortBy="#{resp.responsable_estado}" filterBy="#{resp.responsable_estado}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{resp.responsable_estado}" />
+                                    </p:column>
+                                    <p:column headerText="Responsable" footerText="Responsable" >  
+                                        <p:cellEditor>       
+                                            <f:facet name="output"> 
+                                                <p:selectOneMenu value="#{resp.obj_car.id_cargo}"  panelStyle="width:250px"  
+                                                                 effect="fade" style="width:160px"  required="true" disabled="true">  
+                                                    <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                    <f:selectItems value="#{bCargo.cargarComboCargo}" var="res" itemLabel="#{res.descripcion_cargo}" itemValue="#{res.id_cargo}"/>                
+
+                                                </p:selectOneMenu> 
+                                            </f:facet>      
+                                            <f:facet name="input"> 
+                                                <p:selectOneMenu value="#{resp.obj_car.id_cargo}"  panelStyle="width:250px"  
+                                                                 effect="fade" style="width:160px"  required="true">  
+                                                    <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                    <f:selectItems value="#{bCargo.cargarComboCargo}" var="res" itemLabel="#{res.descripcion_cargo}" itemValue="#{res.id_cargo}" />                
+
+                                                </p:selectOneMenu> 
+                                            </f:facet>      
+                                        </p:cellEditor>    
+
+                                    </p:column>
+
+
+
+                                    <p:column style="width:4%" headerText="Opcion" >  
+                                        <p:commandButton update=":tabResponsable:form_actualizar:actualizar_Responsable2" oncomplete="docDialog2.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{resp}" target="#{bResponsable.selectedResponsable}" />  
+                                        </p:commandButton>  
+                                    </p:column>                   
+                                </p:dataTable>
+                            </p:panel>
+                        </h:form>
+                        <h:form id="form_actualizar">                              
+                            <p:dialog header="Actualizando Responsable" widgetVar="docDialog2" resizable="false" id="docDlg2"  
+                                      showEffect="fade" hideEffect="explode" modal="false">    
+                                <p:panel id="actualizar_Responsable2"> 
+                                    <p:growl sticky="true"  showDetail="true"/>                  
+                                    <h:panelGrid columns="2" cellpadding="4" style="margin:0 auto;">   
+                                        <h:outputText value="Codigo:" />  
+                                        <p:inputText value="#{bResponsable.selectedResponsable.cod_responsable}" style="font-weight:bold" required="true"  />    
+                                        
+                                        <h:outputText value="Nombres:" />  
+                                        <p:inputText value="#{bResponsable.selectedResponsable.nombre_responsable}" style="font-weight:bold" required="true" >  
+                                            <f:validateLength minimum="2" maximum="40"/>
+                                        </p:inputText>
+                                        
+                                        <h:outputText value="Apellidos:" />  
+                                        <p:inputText value="#{bResponsable.selectedResponsable.apellido_responsable}" style="font-weight:bold" required="true" > 
+                                            <f:validateLength minimum="2" maximum="40"/>
+                                        </p:inputText>
+
+
+                                        <h:outputText value="Sexo" /> 
+                                        <p:selectOneMenu value="#{bResponsable.selectedResponsable.sexo_responsable}" required="true" >  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                            <f:selectItem itemLabel="Masculino" itemValue="Masculino" />  
+                                            <f:selectItem itemLabel="Femenino" itemValue="Femenino" />  
+                                        </p:selectOneMenu> 
+
+
+
+                                        <h:outputText value="Celular:" />  
+                                        <p:inputMask value="#{bResponsable.selectedResponsable.celular_responsable}" mask="(99)999-9999" id="cel_responsable"  title="Formato celular"/>                    
+
+                                        <h:outputText value="Direccion:" />  
+                                        <p:inputText value="#{bResponsable.selectedResponsable.direccion_responsable}" style="font-weight:bold" required="true" >  
+                                            <f:validateLength minimum="2" maximum="50"/>
+                                        </p:inputText>
+
+
+                                        <h:outputText value="Estado" /> 
+                                        <p:selectOneMenu value="#{bResponsable.selectedResponsable.responsable_estado}" required="true" >  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                            <f:selectItem itemLabel="0 - ACTIVO" itemValue="0" />  
+                                            <f:selectItem itemLabel="1 - NO ACTIVO" itemValue="1" />  
+                                        </p:selectOneMenu>  
+
+
+                                        <h:outputText value="Cargo:" />  
+                                        <p:selectOneMenu value="#{bResponsable.selectedResponsable.obj_car.id_cargo}"  panelStyle="width:250px"  
+                                                         effect="fade" style="width:160px"  required="true" >  
+                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                            <f:selectItems value="#{bCargo.cargarComboCargo}" var="var" itemLabel="#{var.descripcion_cargo}" itemValue="#{var.id_cargo}" />                
+
+                                        </p:selectOneMenu>  
+
+
+                                        <p:commandButton  value="Actualizar" id="updateResponsable" actionListener="#{bResponsable.doActualizarResponsable}" update="actualizar_Responsable2" />
+                                    </h:panelGrid>                      
+                                </p:panel>
+                            </p:dialog>                  
+                        </h:form>
+                    </p:tab>
+
+                </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

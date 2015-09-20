@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Proyecto Web Municipalidad</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>        
+        <h:outputStylesheet library="css" name="estilo.css"/>        
+    </h:head>
+    <h:body>        
+        <p:layout fullPage="true">
+            <!--NORTE-->
+            <p:layoutUnit position="north" size="100" resizable="false" closable="false" collapsible="false">      
+                
+                <h:outputText label="#{msg.titulo}" styleClass="titulocabecera"/>                
+                
+            </p:layoutUnit>
+            <!--CENTRO-->
+            <p:layoutUnit position="center">                   
+                    <center> 
+             <h:form>
+                 <p:galleria value="#{bgaleria.imagenes}"  
+                var="player" effect="slide" effectSpeed="1000"  
+            panelWidth="850" panelHeight="390" frameWidth="110" frameHeight="50"  
+            filmstripPosition="top" showCaptions="true" showOverlays="true">                  
+  
+                     <p:graphicImage id="playerImage" value="/imagenes/#{player.nombre_archivo}"/>  
+                       <p:galleriaOverlay title="#{player.descripcion}">  
+                
+                       </p:galleriaOverlay>     
+                </p:galleria>  
+  
+             </h:form>     
+             </center> 
+                                        
+            </p:layoutUnit>
+            <!--OESTE-->
+            <p:layoutUnit position="west" size="380" header="Menu de Opciones" resizable="false" closable="false" collapsible="true" effect="drop">                   
+                    <h:form>
+                        <p:slideMenu style="width: 340px;">
+                             <p:submenu label="#{msg.Incripcion}" icon="ui-icon-extlink">
+                        <p:separator /> 
+                   <p:menuitem value="#{msg.empresa}" url="empresa.jsf" />        
+                        <p:separator />                
+                        <p:separator />                                
+                   <p:menuitem value="#{msg.personajuridica}" url="personajuridica.jsf" />
+                        <p:separator />
+                        <p:separator /> 
+                   <p:menuitem value="#{msg.proveedor}" url="proveedor.jsf" />                                                  
+                        <p:separator /> 
+               </p:submenu>  
+               
+                <p:submenu label="#{msg.general}" icon="ui-icon-extlink">
+                                <p:separator /> 
+                    <p:menuitem value="#{msg.almacen}" url="almacen.jsf" />  
+                                 <p:separator /> 
+                                 <p:separator /> 
+                    <p:menuitem value="#{msg.Solicitud}" url="solicitud.jsf" /> 
+                                 <p:separator />
+                                 <p:separator /> 
+                    <p:menuitem value="#{msg.proyecto}" url="proyecto.jsf" />  
+                                 <p:separator />
+                                 <p:separator />
+                    <p:menuitem value="#{msg.articulo}" url="articulo.jsf" />  
+                                 <p:separator />
+                                 <p:separator />
+                                 <p:menuitem value="#{msg.inventario}" url="inventario.jsf" /> 
+               </p:submenu>
+               
+               
+               <p:submenu label="#{msg.detalles}" icon="ui-icon-extlink">
+                        
+                            <p:separator /> 
+                    <p:menuitem value="#{msg.detaarticulo}" url="detallearticulo.jsf" />  
+                            <p:separator /> 
+                            <p:separator /> 
+                    <p:menuitem value="#{msg.solicitudempresa}" url="soliempresa.jsf" />  
+                        <p:separator /> 
+                        <p:separator /> 
+                    <p:menuitem value="#{msg.solicitudpersona}" url="solipersonajuridica.jsf" />  
+                        <p:separator />
+                        <p:separator /> 
+                    <p:menuitem value="#{msg.solicitudproveedor}" url="solicitudpersonajuridica.jsf" />  
+                        <p:separator />
+               </p:submenu>
+               
+               <p:submenu label="#{msg.responsable}" icon="ui-icon-extlink">
+                        <p:separator /> 
+                        <p:menuitem value="#{msg.responsable}" url="responsable.jsf" /> 
+                        <p:separator /> 
+                        <p:separator /> 
+                        <p:menuitem value="#{msg.cargo}" url="cargo.jsf" /> 
+                        <p:separator />
+               </p:submenu> 
+                            
+                            
+                        </p:slideMenu>
+                    </h:form>                                        
+            </p:layoutUnit>
+            <!--SUR-->
+            <p:layoutUnit position="south" size="100" resizable="true" closable="true" collapsible="true">                   
+                
+                <h:outputText label="#{msg.derecho}" />                
+                
+            </p:layoutUnit>
+        </p:layout>
+    </h:body>
+</html>
+

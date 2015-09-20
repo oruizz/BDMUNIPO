@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+                <h:outputText value="Solicitud" styleClass="subtitulocabecera"/>
+                <p:tabView id="tabSolicitud">
+                    <p:tab id="tab1" title="Presentacion">                  
+                        <h:form>
+                            <p:growl id="growl" showDetail="true"/>
+                            <p:fieldset legend="#{msg.descripcion}" toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl"/>
+                            </p:fieldset>
+                        </h:form>                    
+                    </p:tab>
+                   
+                    
+                    <p:tab id="tab2" title="Registrar Solicitud">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                                <h:form id="registrar">
+                                    <p:panel id="nueva_solicitud" header="Datos De La Solicitud">
+                                        <p:growl sticky="true" showDetail="true"/>
+                                        <h:panelGrid columns="1">
+                                            <!--NOMBRE SOLICITUD-->
+                                            <h:outputLabel for="nombre_solicitud" value="(*)Nombre De La Solicitud"/>
+                                            <h:panelGroup>
+                                                <p:inputText value="#{bSolicitud.solicitud_a.nombre_solicitud}" id="nombre_solicitud" required="true" title="Máximo 80 Caracteres" >
+                                                    <f:validateLength minimum="2" maximum="80"/>
+                                                </p:inputText>                                                   
+                                                <p:tooltip for="nombre_solicitud" showEvent="focus" hideEvent="blur" />
+                                                <p:message for="nombre_solicitud" display="icon"/>
+                                            </h:panelGroup>
+                                            <p:commandButton value="Registrar" id="saveSolicitud" actionListener="#{bSolicitud.doRegistraSolicitud()}" update="nueva_solicitud"/>     
+                                        </h:panelGrid> 
+                                                
+                                    </p:panel>
+                                   
+                                </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+                    <!--LISTAR EMPRESA-->                
+                    <p:tab id="tabListado" title="#{msg.listar}">                            
+                        <p:growl sticky="true" showDetail="true"/><!--MUESTRA MENSAJE DE ERROR-->
+                        <h:form id="form_listar">
+                            <p:panel id="listar_solicitud" header="#{msg.listarsoli}">
+                                <p:dataTable id="solicitudTable" var="soli" value="#{bSolicitud.cargarSolicitud}" emptyMessage="#{msg.solivacias}" paginator="true" rows="5" rowsPerPageTemplate="10,15,20">
+                                    <f:facet name="header">  
+                                             Lista De Solicitudes  
+                                    </f:facet> 
+                                    <p:column sortBy="#{soli.cod_solicitud}"  filterBy="#{soli.cod_solicitud}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Codigo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.cod_solicitud}"/>
+                                    </p:column>      
+                                    <p:column sortBy="#{soli.nombre_solicitud}"  filterBy="#{soli.nombre_solicitud}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.nombre_solicitud}"/>
+                                    </p:column> 
+                                    <p:column style="width: 4%">
+                                        <p:commandButton id="selectButton" icon="ui-icon-search" title="Detalles" update=":tabSolicitud:form_listar:displaysoli" oncomplete="soliDialog.show()">
+                                            <f:setPropertyActionListener value="#{soli}" target="#{bSolicitud.selectedSolicitud}"/>                                            
+                                        </p:commandButton>
+                                       
+                                    </p:column> 
+                                </p:dataTable>
+                                
+                                <p:panel header="Exportar Todos los Datos">
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png"/>
+                                        <p:dataExporter type="xls" target="solicitudTable" fileName="solicitudes"/>
+                                    </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png"/>
+                                        <p:dataExporter type="pdf" target="solicitudTable" fileName="solicitudes"/>
+                                    </h:commandLink>
+                                </p:panel>
+                                <p:dialog header="Detalle De La Solicitud" widgetVar="soliDialog" resizable="false" id="soliDlg" showEffect="fade" hideEffect="explode" modal="false">
+                                    <h:panelGrid id="displaysoli" columns="2" cellpadding="4" style="margin: 0 auto;">
+                                        <h:outputText value="Codigo solicitud:"/>
+                                        <h:outputText value="#{bSolicitud.selectedSolicitud.cod_solicitud}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre solicitud:"/>
+                                        <h:outputText value="#{bSolicitud.selectedSolicitud.nombre_solicitud}" style="font-weight: bold"/>
+                                    </h:panelGrid>
+                                </p:dialog>                                          
+                            </p:panel>
+                        </h:form>
+                     </p:tab><!-- FIN LISTADO -->
+                     <p:tab id="tabEditar" title="#{msg.editar}">
+                         <p:growl sticky="true"  showDetail="true"/>
+                            <h:form id="form_editar2">                 
+                            <p:panel id="editar_solicitud" header="Edicion Solicitud">                 
+                                <p:dataTable id="solicitudTableEdit2"   widgetVar="solicitudTableEdit2"
+                                             var="sol" value="#{bSolicitud.cargarSolicitud}" paginator="true" 
+                                             rows="5"       editable="true"             
+                                             emptyMessage="No solicitudes encontradas"
+                                             rowsPerPageTemplate="10,15,20" 
+                                             resizableColumns="true"
+                                             >                                                          
+                                    <p:column headerText="codigo solicitud" footerText="codigo solicitud" sortBy="#{sol.cod_solicitud}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{sol.cod_solicitud}" />
+                                    </p:column>
+                                    <p:column headerText="Nombre solicitud" footerText="Nombre solicitud" sortBy="#{sol.nombre_solicitud}" filterBy="#{sol.nombre_solicitud}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{sol.nombre_solicitud}" />
+
+                                    </p:column>
+                                    
+                                    
+                                    <p:column style="width:4%" headerText="Opcion" >  
+                                        <p:commandButton id="selectButton2" update=":tabSolicitud:form_actualizar:actualizar_Solicitud2" oncomplete="empDialog2.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{sol}" target="#{bSolicitud.selectedSolicitud}" />  
+                                        </p:commandButton>  
+                                    </p:column>
+                                    </p:dataTable>
+                            </p:panel>
+                        </h:form>
+                         <h:form id="form_actualizar">                              
+                                    <p:dialog header="Actualizando Solicitud" widgetVar="empDialog2" resizable="false" id="empDlg2"  
+                                            showEffect="fade" hideEffect="explode" modal="false">    
+                                        <p:panel id="actualizar_Solicitud2"> 
+                                            <p:growl sticky="true"  showDetail="true"/>                  
+                                            <h:panelGrid columns="2" cellpadding="4" style="margin:0 auto;">   
+                                                <h:outputText value="Codigo solicitud:" />  
+                                                <p:inputText value="#{bSolicitud.selectedSolicitud.cod_solicitud}" style="font-weight:bold" required="true"/> 
+                                                  
+                                                <h:outputText value="Nombre solicitud:" />  
+                                                <p:inputText value="#{bSolicitud.selectedSolicitud.nombre_solicitud}" style="font-weight:bold" required="true">
+                                                    <f:validateLength minimum="2" maximum="80"/>
+                                                </p:inputText>
+                                               
+                                                <p:commandButton  value="Actualizar" id="updateSolicitud" actionListener="#{bSolicitud.doActualizarSolicitud()}" update="actualizar_Solicitud2" />
+                                            </h:panelGrid>                      
+                                        </p:panel>
+                                    </p:dialog>                  
+                           </h:form> 
+                     </p:tab>
+                 
+                </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

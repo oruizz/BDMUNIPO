@@ -1,0 +1,99 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:p= "http://primefaces.org/ui"
+          xmlns:ui="http://java.sun.com/jsf/facelets" > 
+      <h:head>
+            
+         
+
+     
+       
+      </h:head>
+    <h:body>
+<ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">            
+    <ui:define name="content">
+            <h:outputText value="Reportes"  styleClass="subtitulocabecera"/> <br />  
+            <center>
+            <p:panelGrid columns="1" style="width: 100%;">
+                <h:panelGroup>
+                    <h:form>
+                    <p:dataTable id="reporte1Table"   widgetVar="reporte1Table"
+                                 var="emp" value="#{bReportes.getreporteTotalArticulosSolixEmpresa()}" paginator="true" 
+                        rows="5"                   
+                        emptyMessage="No Informacion encontrada"
+                        rowsPerPageTemplate="5,10,15,20" 
+                        >                          
+                  <f:facet name="header">  
+                    <h:outputText value="REPORTE TOTAL DE ARTICULOS POR SOLICITUD DE EMPRESA"/>                      
+                  </f:facet> 
+                        <p:column sortBy="#{emp.nombre}">  
+                    <f:facet name="header">  
+                        <h:outputText value="Nombre y RUC" />  
+                        </f:facet>
+                    <h:outputText value="#{emp.nombre}" />
+                 </p:column>
+                  <p:column sortBy="#{emp.nombre}">  
+                    <f:facet name="header">  
+                        <h:outputText value="Total" />  
+                        </f:facet>
+                      <h:outputText value="#{emp.precio_total}" />
+                 </p:column>                
+                        <p:column sortBy="#{emp.cantidad}">  
+                    <f:facet name="header">  
+                        <h:outputText value="Cantidad" />  
+                        </f:facet>
+                      <h:outputText value="#{emp.cantidad}" />
+                 </p:column>                             
+                </p:dataTable>
+                                    <p:panel header="Exportar Todos los Datos">  
+                    <h:commandLink>  
+                        <p:graphicImage value="#{msg.ruta_img}excel.png" />  
+                         <p:dataExporter type="xls" target="reporte1Table" fileName="reporteTotalArticulosSolixEmpresa" />  
+                        </h:commandLink>    
+                        <h:commandLink>  
+                        <p:graphicImage value="#{msg.ruta_img}pdf.png" />  
+                        <p:dataExporter type="pdf" target="reporte1Table" fileName="reporteTotalArticulosSolixEmpresa"/>  
+                        </h:commandLink>
+                   </p:panel>
+                        </h:form>
+                </h:panelGroup>
+                <h:panelGroup>
+                    <p:pieChart id="sample" value="#{bReportes.createPieModelTotalArticulosSolixEmpresa()}" 
+                title="Monto De Articulos Solicitados Por Empresas" 
+                legendPosition="e" fill="true" showDataLabels="true"   
+                style="width:600px;height:300px" sliceMargin="5" diameter="150" 
+                widgetVar="pie"/>    
+                <p:commandButton type="button" value="Exporta" icon="ui-icon-extlink" onclick="exportPie()"/> 
+                <p:dialog widgetVar="dlg2" showEffect="fade"  header="Importa">  
+                    <p:outputPanel id="outputpie" layout="block" style="width:600px;height:300px"/>  
+                    </p:dialog>  
+                </h:panelGroup>        
+                <h:panelGroup>
+                    <p:barChart id="basic" value="#{bReportes.createBarModelTotalArticuloSolixEmpresa()}" legendPosition="ne"  
+                        orientation="horizontal"      title="Comparacion Entre Las Solicitudes De La Empresas" min="0" max="10000" style="width:600px" animate="true" zoom="true" widgetVar="barraec1" />  
+                     <p:commandButton type="button" value="#{msg.expbarra}" icon="ui-icon-extlink" onclick="exportChart()"/> 
+                     <p:dialog widgetVar="dlg" showEffect="fade"  header="#{msg.gimgbarra}">  
+                        <p:outputPanel id="output" layout="block" style="width:700px;height:300px"/>  
+                     </p:dialog>
+                </h:panelGroup>                
+            </p:panelGrid>
+             <SCRIPT LANGUAGE="JavaScript"> 
+         function exportChart(){  
+          $('#output').empty().append(barraec1.exportAsImage());  
+          dlg.show();  
+        }
+        function exportPie(){  
+          $('#outputpie').empty().append(pie.exportAsImage());  
+          dlg2.show();  
+        }
+          </SCRIPT>
+    </center>
+    </ui:define>  
+    </ui:composition>
+    </h:body>
+
+</html>
+

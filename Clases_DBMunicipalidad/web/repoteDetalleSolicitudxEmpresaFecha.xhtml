@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:p= "http://primefaces.org/ui"
+          xmlns:ui="http://java.sun.com/jsf/facelets" >
+    <h:head>
+        
+    </h:head>
+    <h:body>
+       <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">            
+            <ui:define name="content">
+                <h:outputText value="REPORTES"  styleClass="subtitulocabecera"/> <br />  
+                <h:form>
+                    <h:panelGrid columns="1">
+                        <h:outputLabel  value="(*)Fecha Inicio" />
+                        <h:panelGroup>
+                            <p:calendar effect="explode" value="#{bReportes.fech_ini}" required="true"  pattern="dd/MM/yyyy"/>                                    
+                        </h:panelGroup> 
+                        <h:outputLabel  value="(*)Fecha Fin" />
+                        <h:panelGroup>
+                            <p:calendar effect="explode" value="#{bReportes.fech_fin}" required="true" pattern="dd/MM/yyyy"/>                                    
+                        </h:panelGroup> 
+                        
+                        <h:outputLabel  value="(*)Seleccione Empresa" />
+                        <h:panelGroup>
+                            
+                            <p:selectOneMenu value="#{bReportes.empresa_p.cod_empresa}"  panelStyle="width:250px"  
+                                             filter="true" filterMatchMode="startsWith"    effect="fade" style="width:160px"  required="true" id="dep_empresa">  
+                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                <f:selectItems value="#{bEmpresa.cargarComboEmpxActivo}" var="variable" itemLabel="#{variable.cod_empresa} - #{variable.nombre_empresa}" itemValue="#{variable.cod_empresa}" />                                                    
+                            </p:selectOneMenu>
+                        </h:panelGroup> 
+                        
+                        
+                        <p:commandButton   value="Buscar" id="search" update="listar_solicitudempresafecha" onclick="listar_solicitudempresafecha.show();" />
+                    </h:panelGrid>
+                    <p:panel id="listar_solicitudempresafecha" header="Listando Solicitudes por Empresa entre Fechas"  
+                             visible="false" widgetVar="listar_solicitudempresafecha"
+                             closable="true" toggleable="true">
+                        <p:dataTable  
+                            var="spe" value="#{bReportes.buscarSolicitudxEmpresaxFecha}" paginator="true" 
+                            rows="5"                   
+                            emptyMessage="No Solicitud Encontrada"
+                            rowsPerPageTemplate="5,10,15,20"  
+                            >                                                         
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Codigo" />  
+                                </f:facet>
+                                <h:outputText value="#{spe.id_detalle_solicitud_empresa}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Empresa" />  
+                                </f:facet>
+                                <h:outputText value="#{spe.obj_em.nombre_empresa}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Nombre Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{spe.nombre_solicitud}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Responsable" />  
+                                </f:facet>
+                                <h:outputText value="#{spe.obj_re.nombre_responsable}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Proyecto" />  
+                                </f:facet>
+                                <h:outputText value="#{spe.obj_pro.nombre_proyecto}" />
+                            </p:column>   
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Articulo" />  
+                                </f:facet>
+                                <h:outputText value="#{spe.obj_ar.nombre_articulo}" />
+                            </p:column> 
+                            
+                            
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Fecha Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{spe.fecha_solicitud_empresa}"/>
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">   
+                                    <h:outputText value="Estado Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{spe.estado_solicitud_empresa}"/>
+                            </p:column>  
+                        </p:dataTable>
+
+                    </p:panel> 
+
+
+                </h:form>
+
+
+            </ui:define>  
+        </ui:composition>
+    </h:body>
+</html>
+

@@ -1,0 +1,163 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!-- =========== FULL CONFIGURATION FILE ================================== -->
+
+<faces-config version="2.0"
+    xmlns="http://java.sun.com/xml/ns/javaee" 
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+    <application>
+           <locale-config>
+                <default-locale>es</default-locale>
+              <supported-locale>en</supported-locale>
+           </locale-config> 
+            <resource-bundle>
+               <base-name>Utils.mensajes</base-name>
+               <var>msg</var>
+           </resource-bundle>
+   </application>
+ 
+  
+    <managed-bean>
+        <managed-bean-name>bEmpresa</managed-bean-name>
+        <managed-bean-class>Beans.BeanEmpresa</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    
+    <managed-bean>
+        <managed-bean-name>bReportes</managed-bean-name>
+        <managed-bean-class>Beans.BeansReportes</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bsalidamatemp</managed-bean-name>
+        <managed-bean-class>Beans.Beandsalida_matemp</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bUsuario</managed-bean-name>
+        <managed-bean-class>Beans.BeansUsuario</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bPersona</managed-bean-name>
+        <managed-bean-class>Beans.BeanPersona_Juridica</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+      <managed-bean>
+        <managed-bean-name>bProveedor</managed-bean-name>
+        <managed-bean-class>Beans.BeanProveedor</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bSolicitud</managed-bean-name>
+        <managed-bean-class>Beans.BeanSolicitud</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bordenproveedor</managed-bean-name>
+        <managed-bean-class>Beans.Beanordenproveedor</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bInventario</managed-bean-name>
+        <managed-bean-class>Beans.BeanInventario</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bAlmacen</managed-bean-name>
+        <managed-bean-class>Beans.BeanAlmacen</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
+        <managed-bean-name>bProyecto</managed-bean-name>
+        <managed-bean-class>Beans.BeanProyecto</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bResponsable</managed-bean-name>
+        <managed-bean-class>Beans.BeanResponsable</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bArticulo</managed-bean-name>
+        <managed-bean-class>Beans.BeanArticulo</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    
+      <managed-bean>
+        <managed-bean-name>bDetallearticulo</managed-bean-name>
+        <managed-bean-class>Beans.Beandetalle_articulo</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bDetasolitudempresa</managed-bean-name>
+        <managed-bean-class>Beans.Beandetalle_solicitud_empresa</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bDetasolipersona</managed-bean-name>
+        <managed-bean-class>Beans.Beansdetalle_solicitud_persona_juridica</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+   <managed-bean>
+        <managed-bean-name>bDetallesolicitudproveedor</managed-bean-name>
+        <managed-bean-class>Beans.Beandetalle_solicitud_proveedor</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
+        <managed-bean-name>bsolicitudpersona</managed-bean-name>
+        <managed-bean-class>Beans.BeanPersona_Juridica</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
+        <managed-bean-name>bsalidamatepj</managed-bean-name>
+        <managed-bean-class>Beans.Beandsalida_matepj</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+    <managed-bean>
+        <managed-bean-name>bCargo</managed-bean-name>
+        <managed-bean-class>Beans.BeanCargo</managed-bean-class>
+        <managed-bean-scope>view</managed-bean-scope>
+    </managed-bean>
+    
+     <managed-bean>
+        <managed-bean-name>bgaleria</managed-bean-name>
+        <managed-bean-class>Utils.GalleriaBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+    
+    <managed-bean>
+        <managed-bean-name>autoCompleteBean</managed-bean-name>
+        <managed-bean-class>Utils.AutoCompleteBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    <managed-bean>
+        <managed-bean-name>userWizard</managed-bean-name>
+        <managed-bean-class>Utils.UserWizard</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+    
+
+</faces-config>

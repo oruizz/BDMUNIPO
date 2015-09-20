@@ -1,0 +1,126 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p= "http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets" > 
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">            
+            <ui:define name="content">
+                <h:outputText value="REPORTES"  styleClass="subtitulocabecera"/> <br />  
+                <h:form>
+                    <h:panelGrid columns="1">
+                        <h:outputLabel  value="(*)Fecha Inicio" />
+                        <h:panelGroup>
+                            <p:calendar effect="explode" value="#{bReportes.fech_ini}" required="true"  pattern="dd/MM/yyyy"/>                                    
+                        </h:panelGroup> 
+                        <h:outputLabel  value="(*)Fecha Fin" />
+                        <h:panelGroup>
+                            <p:calendar effect="explode" value="#{bReportes.fech_fin}" required="true" pattern="dd/MM/yyyy"/>                                    
+                        </h:panelGroup> 
+                        
+                        <h:outputLabel  value="(*)Seleccione Persona" />
+                        <h:panelGroup>
+                            
+                            <p:selectOneMenu value="#{bReportes.persona_p.cod_persona}"  panelStyle="width:250px"  
+                                             filter="true" filterMatchMode="startsWith"    effect="fade" style="width:160px"  required="true" id="dep_persona">  
+                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                <f:selectItems value="#{bPersona.cargarCombona}" var="variable" itemLabel="#{variable.cod_persona} - #{variable.nombre_persona} #{variable.apellido_persona}" itemValue="#{variable.cod_persona}" />                                                    
+                            </p:selectOneMenu>
+                        </h:panelGroup> 
+                        
+                        
+                        <p:commandButton   value="Buscar" id="search" update="listar_solicitudfecha" onclick="listar_solicitudfecha.show();" />
+                    </h:panelGrid>
+                    <p:panel id="listar_solicitudfecha" header="Listando fechas por Persona Juridica entre Fechas"  
+                             visible="false" widgetVar="listar_solicitudfecha"
+                             closable="true" toggleable="true">
+                        <p:dataTable  
+                            var="spj" value="#{bReportes.buscarSolicitudxPersonaJuridicaxFecha}" paginator="true" 
+                            rows="5"                   
+                            emptyMessage="No Solicitud Encontrada"
+                            rowsPerPageTemplate="5,10,15,20"  
+                            >                                                         
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Codigo" />  
+                                </f:facet>
+                                <h:outputText value="#{spj.id_detalle_solicitud_persona_juridica}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Persona" />  
+                                </f:facet>
+                                <h:outputText value="#{spj.obj_pe.cod_persona} - #{spj.obj_pe.nombre_persona}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Nombre Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{spj.nombre_solicitud}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Proyecto" />  
+                                </f:facet>
+                                <h:outputText value="#{spj.obj_pro.id_proyecto} - #{spj.obj_pro.nombre_proyecto}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Codigo Articulo" />  
+                                </f:facet>
+                                <h:outputText value="#{spj.obj_ar.cod_articulo}" />
+                            </p:column>   
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Nombre Articulo" />  
+                                </f:facet>
+                                <h:outputText value="#{spj.obj_ar.nombre_articulo}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Responsable" />  
+                                </f:facet>
+                                <h:outputText value="#{spj.obj_re.cod_responsable} - #{spj.obj_re.nombre_responsable}" />
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Fecha Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{spj.fecha_solicitud_persona}"/>
+                            </p:column> 
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Estado Solicitud" />  
+                                </f:facet>
+                                <p:selectOneMenu value="#{spj.estado_solicitud_persona}" style="width:100px; font-weight:bold;"> 
+
+                                    <f:selectItem itemLabel="ABIERTO" itemValue="0" />  
+                                    <f:selectItem itemLabel="CERRADO" itemValue="1" />      
+                                </p:selectOneMenu> 
+                            </p:column>  
+                        </p:dataTable>
+
+                    </p:panel> 
+
+
+                </h:form>
+
+
+            </ui:define>  
+        </ui:composition>
+    </h:body>
+
+</html>
+

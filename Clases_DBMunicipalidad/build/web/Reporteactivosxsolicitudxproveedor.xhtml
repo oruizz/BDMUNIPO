@@ -1,0 +1,83 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p= "http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets" >
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">      
+            <ui:define name="content">
+                <h:outputText value="Reporte De Las Solicitudes Activas Por Proveedor "  styleClass="subtitulocabecera"/> <br />  
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="4"  cellspacing="4" id="report">
+                        <h:panelGroup>
+                            <h:outputLabel  value="(*)Seleccione Proveedor :  " />
+                            <p:selectOneMenu value="#{bReportes.ov.id_proveedor}"  panelStyle="width:250px"  
+                                             effect="fade" style="width:160px"  required="true" id="dep_proveedor">
+                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                <f:selectItems value="#{bProveedor.cargarComboProveedor}" var="variable" itemLabel="#{variable.id_proveedor} - #{variable.nombre_proveedor}" itemValue="#{variable.id_proveedor}" />                                                                                 
+
+                            </p:selectOneMenu>                             
+
+                        </h:panelGroup>
+                        <p:commandButton   value="Buscar" id="search" update="listar_solicitudes" onclick="listar_solicitudes.show();" />
+                    </h:panelGrid>
+                    <p:panel id="listar_solicitudes" header="Lista Solicitudes Activas Proveedor"  
+                             visible="false" widgetVar="listar_solicitudes"
+                             closable="true" toggleable="true">
+                        <p:dataTable  
+                            var="cre" value="#{bReportes.buscaractivosxsolicitudxproveedor}" paginator="true" 
+                            rows="5"                   
+                            emptyMessage="No Solicitudes Encontradas"
+                            rowsPerPageTemplate="5,10,15,20"  
+                            resizableColumns="true"
+                            >
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Id Detalle Proveedor" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.id_detalle_proveedor}" />
+                            </p:column>
+                            
+                                                    
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Nombre Articulo" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.obj_ar.cod_articulo} - #{cre.obj_ar.nombre_articulo}" />
+                            </p:column>
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Nombre Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.obj_ds.nombre_solicitud}" />
+                            </p:column>
+                            
+                             <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Fecha Solicitud" />  
+                                </f:facet>
+                                 <h:outputText value="#{cre.fecha_solicitud_proveedor}" />
+                            </p:column>
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Estado Solicitud Proveedor" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.estado_solicitud_proveedor}" />
+                            </p:column>
+                            
+                            </p:dataTable>                                                                                 
+                    </p:panel>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

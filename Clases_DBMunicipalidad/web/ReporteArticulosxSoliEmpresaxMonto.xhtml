@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:p= "http://primefaces.org/ui"
+          xmlns:ui="http://java.sun.com/jsf/facelets" >
+    <h:head>
+        
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">      
+            <ui:define name="content">
+                <h:outputText value="Reporte Articulos Montos Minimos"  styleClass="subtitulocabecera"/> <br />  
+                <h:form>
+                    <h:panelGrid columns="1" id="report">
+                        <h:panelGroup>
+                            <h:outputLabel  value="(*)Seleccione Empresa :  " />
+                            <p:selectOneMenu value="#{bReportes.empresa_p.cod_empresa}"  panelStyle="width:250px"  
+                                       effect="fade" style="width:160px"  required="true" id="dep_articulos">
+                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                <f:selectItems value="#{bEmpresa.cargarComboEmpxActivo}" var="variable" itemLabel="#{variable.cod_empresa} - #{variable.nombre_empresa}" itemValue="#{variable.cod_empresa}" />                                                                                 
+                                
+                            </p:selectOneMenu>
+                            
+                            <h:outputLabel  value="Monto :  " />
+                            <p:inputText value="#{bReportes.importe}" id="tel_articulos" >
+                                
+                                </p:inputText> 
+                            <p:commandButton   value="Buscar" id="search" update="listar_articulos" onclick="listar_articulos.show();" />
+                        </h:panelGroup>
+                    </h:panelGrid>
+                    <p:panel id="listar_articulos" header="listando Articulos y Detalles Monto minimo"  
+                              visible="false" widgetVar="listar_articulos"
+                              closable="true" toggleable="true">
+                        <p:dataTable  
+                            var="cre" value="#{bReportes.buscarArticulosxSoliEmpresaxMonto}" paginator="true" 
+                                        rows="5"                   
+                                        emptyMessage="No Solicitud Encontrada"
+                                        rowsPerPageTemplate="5,10,15,20"  
+                                        >
+                                <p:column>  
+                                    <f:facet name="header">  
+                                        <h:outputText value="Id Solicitud Empresa" />  
+                                    </f:facet>
+                                        <h:outputText value="#{cre.id_detalle_solicitud_empresa}" />
+                                </p:column>
+                                <p:column>  
+                                    <f:facet name="header">  
+                                        <h:outputText value="Nombre de la Solicitud" />  
+                                    </f:facet>
+                                        <h:outputText value="#{cre.nombre_solicitud}" />
+                                
+                                </p:column>
+                                <p:column>  
+                                    <f:facet name="header">  
+                                        <h:outputText value="Cod Articulo" />  
+                                    </f:facet>
+                                        <h:outputText value="#{cre.obj_ar.cod_articulo}" />
+                                
+                                </p:column>
+                                <p:column>  
+                                    <f:facet name="header">  
+                                        <h:outputText value="Nombre Articulo" />  
+                                    </f:facet>
+                                        <h:outputText value="#{cre.obj_ar.nombre_articulo}" />
+                                
+                                </p:column>
+                                <p:column>  
+                                    <f:facet name="header">  
+                                        <h:outputText value="Cantidad Articulo" />  
+                                    </f:facet>
+                                        <h:outputText value="#{cre.obj_ar.cantidad_articulo}" />
+                                
+                                </p:column>
+                        </p:dataTable>                                                                                 
+                    </p:panel>
+               
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

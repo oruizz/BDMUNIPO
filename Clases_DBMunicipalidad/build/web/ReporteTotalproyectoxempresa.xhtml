@@ -1,0 +1,90 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p= "http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets" >
+    <h:head>
+
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">      
+            <ui:define name="content">
+                <h:outputText value="Reporte De Los Proyecto De La Empresa "  styleClass="subtitulocabecera"/> <br />  
+                <h:form>
+                    <h:panelGrid columns="2" cellpadding="4"  cellspacing="4" id="report">
+                        <h:panelGroup>
+                            <h:outputLabel  value="(*)Seleccione Proyecto :  " />
+                            <p:selectOneMenu value="#{bReportes.pro.id_proyecto}"  panelStyle="width:250px"  
+                                             effect="fade" style="width:160px"  required="true" id="dep_responsable">
+                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                <f:selectItems value="#{bProyecto.cargarComboPro}" var="variable" itemLabel="#{variable.id_proyecto} - #{variable.nombre_proyecto}" itemValue="#{variable.id_proyecto}" />                                                                                 
+
+                            </p:selectOneMenu>                             
+
+                        </h:panelGroup>
+                        <p:commandButton   value="Buscar" id="search" update="listar_solicitudes" onclick="listar_solicitudes.show();" />
+                    </h:panelGrid>
+                    <p:panel id="listar_solicitudes" header="Lista Solicitudes Del Proyecto"  
+                             visible="false" widgetVar="listar_solicitudes"
+                             closable="true" toggleable="true">
+                        <p:dataTable  
+                            var="cre" value="#{bReportes.buscarproyectoxempresa}" paginator="true" 
+                            rows="5"                   
+                            emptyMessage="No Solicitudes Encontradas"
+                            rowsPerPageTemplate="5,10,15,20"  
+                            resizableColumns="true"
+                            >
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Id Detalle Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.id_detalle_solicitud_empresa}" />
+                            </p:column>
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Nombre Empresa" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.obj_em.cod_empresa}-#{cre.obj_em.nombre_empresa}" />
+                            </p:column>
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Nombre Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.nombre_solicitud}" />
+                            </p:column>
+                            
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Nombre Articulo" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.obj_ar.nombre_articulo}" />
+                            </p:column>
+                            
+                                                       
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Fecha Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.fecha_solicitud_empresa}" />
+                            </p:column>
+                            <p:column>  
+                                <f:facet name="header">  
+                                    <h:outputText value="Estado Solicitud" />  
+                                </f:facet>
+                                <h:outputText value="#{cre.estado_solicitud_empresa}" />
+                            </p:column>
+                             
+                        
+                        </p:dataTable>                                                                                 
+                    </p:panel>
+
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

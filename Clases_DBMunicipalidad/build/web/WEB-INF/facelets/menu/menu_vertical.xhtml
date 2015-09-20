@@ -1,0 +1,81 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"      
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition>
+           <h:form>
+           <p:panelMenu style="width:300px;">           
+               
+               <p:submenu label="#{msg.Incripcion}" icon="ui-icon-extlink">
+                        <p:separator /> 
+                   <p:menuitem value="#{msg.empresa}"  url="empresa.jsf" />        
+                        <p:separator />                
+                        <p:separator />                                
+                   <p:menuitem value="#{msg.personajuridica}" url="personajuridica.jsf" />
+                        <p:separator />
+                        <p:separator /> 
+                   <p:menuitem value="#{msg.proveedor}" url="proveedor.jsf" />                                                  
+                        <p:separator /> 
+               </p:submenu>  
+               
+                <p:submenu label="#{msg.general}" icon="ui-icon-extlink">
+                                <p:separator /> 
+                    <p:menuitem value="#{msg.almacen}" url="almacen.jsf" />  
+                                 <p:separator /> 
+                                 <p:separator /> 
+                    <p:menuitem value="#{msg.Solicitud}" url="solicitud.jsf" /> 
+                                 <p:separator />
+                                 <p:separator /> 
+                    <p:menuitem value="#{msg.proyecto}" url="proyecto.jsf" />  
+                                 <p:separator />
+                                 <p:separator />
+                    <p:menuitem value="#{msg.articulo}" url="articulo.jsf" />
+                    <p:separator />
+                                 <p:separator />
+                    <p:menuitem value="Reportes" url="reportes.jsf" />  
+                                 
+               </p:submenu>
+               
+               
+               <p:submenu label="#{msg.detalles}" icon="ui-icon-extlink" rendered="#{bUsuario.usuario_l.id_cargo eq 'CA000001' or bUsuario.usuario_l.id_cargo eq 'CA000002'}">
+                        
+                   
+                           <p:separator /> 
+                            <p:separator /> 
+                            <p:submenu label="Acciones Empresa" icon="ui-icon-extlink">
+                                <p:menuitem value="Solicitud Empresa" url="soliempresa.jsf" />
+                                <p:menuitem value="Orden De Salida Material empresa" url="dsalidamatemp.jsf"/>
+                            </p:submenu>    
+                        <p:separator /> 
+                        <p:separator /> 
+                        <p:submenu label="Acciones Persona Juridica" icon="ui-icon-extlink">
+                                <p:menuitem value="Solicitud Persona Juridica" url="solipersonajuridica.jsf" />
+                                <p:menuitem value="Orden De Salida Material Persona Juridica" url="dsalidamatepj.jsf"/>
+                        </p:submenu>
+                        <p:separator />
+                        <p:separator />
+                        <p:submenu label="Acciones Proveedor" icon="ui-icon-extlink">
+                                <p:menuitem value="Solicitud Proveedor" url="detallesolicitudproveedor.jsf" />
+                                <p:menuitem value="Orden De Entrada Proveedor" url="ordenproveedor.jsf"/>
+                        </p:submenu>
+                        <p:separator />
+               </p:submenu>
+               
+               <p:submenu label="#{msg.responsable}" icon="ui-icon-extlink">
+                        <p:separator /> 
+                        <p:menuitem value="#{msg.responsable}" url="responsable.jsf" /> 
+                        <p:separator /> 
+                        <p:separator /> 
+                        <p:menuitem value="#{msg.cargo}" url="cargo.jsf" /> 
+                        <p:separator />
+               </p:submenu> 
+        </p:panelMenu>
+            </h:form>
+        </ui:composition>    
+    </h:body>
+</html>

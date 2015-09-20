@@ -1,0 +1,335 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+                <h:outputText value="Detalle Solicitud Empresa" styleClass="subtitulocabecera"/>
+                <p:tabView id="tabsoliempresa">
+                    <p:tab id="tab1" title="Presentacion">                  
+                        <h:form>
+                            <p:growl id="growl" showDetail="true"/>
+                            <p:fieldset legend="#{msg.descripcion}" toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl"/>
+                            </p:fieldset>
+                        </h:form>                    
+                    </p:tab>
+                   
+                    
+                    <p:tab id="tab2" title="Registrar Detalle Solicitud De Empresa">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                                <h:form id="registrar">
+                                    <p:panel id="nuevo_solidetalle" header="Datos Del Detalle Solicitud Empresa">
+                                        <p:growl sticky="true" showDetail="true"/>
+                                        <h:panelGrid columns="1">
+                                            
+                                            <h:outputText  value="(*)Empresa"/>
+                                                    <h:panelGroup>                                                       
+                                                        <p:selectOneMenu value="#{bDetasolitudempresa.detaempresa_a.obj_em.cod_empresa}"  panelStyle="width:250px"  
+                                                                effect="fade" style="width:160px"  required="true" id="cod_empresa">  
+                                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                            <f:selectItems value="#{bEmpresa.cargarComboEmpxActivo}" var="variable" itemLabel="#{variable.nombre_empresa}" itemValue="#{variable.cod_empresa}" />                
+                                    
+                                                        </p:selectOneMenu>  
+                                                            <p:tooltip for="cod_empresa" showEvent="focus" hideEvent="blur" />              
+                                                            <p:growl  for="cod_empresa" showDetail="true" />             
+                                                      </h:panelGroup>  
+                                           
+                                           <h:outputLabel for="nombre_solicitud" value="(*)Nombre De La Solicitud"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bDetasolitudempresa.detaempresa_a.nombre_solicitud}" id="nombre_solicitud" required="true" title="Máximo 60 Caracteres" >
+                                                <f:validateLength minimum="2" maximum="60"/>
+                                            </p:inputText>                                                   
+                                            <p:tooltip for="nombre_solicitud" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="nombre_solicitud" display="icon"/>
+                                        </h:panelGroup>
+                                            
+                                            
+                                            <h:outputText  value="(*)Responsable"/>
+                                                    <h:panelGroup>                                                       
+                                                        <p:selectOneMenu value="#{bDetasolitudempresa.detaempresa_a.obj_re.cod_responsable}"  panelStyle="width:250px"  
+                                                                effect="fade" style="width:160px"  required="true" id="cod_responsable">  
+                                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                            <f:selectItems value="#{bResponsable.cargarComboRespoxactivo}" var="variable" itemLabel="#{variable.nombre_responsable} #{variable.apellido_responsable} " itemValue="#{variable.cod_responsable}" />                
+                                    
+                                                        </p:selectOneMenu>  
+                                                            <p:tooltip for="cod_responsable" showEvent="focus" hideEvent="blur" />              
+                                                            <p:growl  for="cod_responsable" showDetail="true" />             
+                                                      </h:panelGroup>
+                                            
+                                            <h:outputText  value="(*)Proyecto"/>
+                                                    <h:panelGroup>                                                       
+                                                        <p:selectOneMenu value="#{bDetasolitudempresa.detaempresa_a.obj_pro.id_proyecto}"  panelStyle="width:250px"  
+                                                                effect="fade" style="width:160px"  required="true" id="id_proyecto">  
+                                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                            <f:selectItems value="#{bProyecto.cargarComboPro}" var="variable" itemLabel="#{variable.nombre_proyecto}" itemValue="#{variable.id_proyecto}" />                
+                                    
+                                                        </p:selectOneMenu>  
+                                                            <p:tooltip for="id_proyecto" showEvent="focus" hideEvent="blur" />              
+                                                            <p:growl  for="id_proyecto" showDetail="true" />             
+                                                      </h:panelGroup>
+                                            
+                                            <h:outputText  value="(*)Articulo"/>
+                                                    <h:panelGroup>                                                       
+                                                        <p:selectOneMenu value="#{bDetasolitudempresa.detaempresa_a.obj_ar.cod_articulo}"  panelStyle="width:250px"  
+                                                                effect="fade" style="width:160px"  required="true" id="cod_articulo">  
+                                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                            <f:selectItems value="#{bArticulo.cargarComboArt}" var="variable" itemLabel="#{variable.nombre_articulo}" itemValue="#{variable.cod_articulo}" />                
+                                    
+                                                        </p:selectOneMenu>  
+                                                            <p:tooltip for="cod_articulo" showEvent="focus" hideEvent="blur" />              
+                                                            <p:growl  for="cod_articulo" showDetail="true" />             
+                                                      </h:panelGroup>
+                                            
+                                            <h:outputText  value="(*) Fecha De Solicitud Empresa"/>
+                                                <h:panelGroup>
+                                                    <p:calendar effect="explode" value="#{bDetasolitudempresa.detaempresa_a.fecha_solicitud_empresa}" required="true"/>
+                                                </h:panelGroup>  
+                     
+                                             <h:outputText value="(*) Estado Solicitud " /> 
+                                             <p:selectOneMenu value="#{bDetasolitudempresa.detaempresa_a.estado_solicitud_empresa}" style="width: 150px;">  
+                                         <f:selectItem itemLabel="Eligir Opcion" itemValue="" />
+                                         <f:selectItem itemLabel="1 - CERRADO" itemValue="1" /> 
+                                         <f:selectItem itemLabel="0 - ABIERTO" itemValue="0" />  
+                                          
+                                         
+                                       </p:selectOneMenu>
+                                            
+                                            <p:commandButton value="Registrar" id="savesoliempresa" actionListener="#{bDetasolitudempresa.doRegistrarsoliempresa()}" update="nuevo_solidetalle"/>     
+                                        </h:panelGrid> 
+                                                
+                                    </p:panel>
+                                   
+                                </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+                    <!--LISTAR SOLIEMPRESA-->                
+                    <p:tab id="tabListado" title="#{msg.listar}">                            
+                        <p:growl sticky="true" showDetail="true"/><!--MUESTRA MENSAJE DE ERROR-->
+                        <h:form id="form_listar">
+                            <p:panel id="listar_soliempresa" header="#{msg.listarsolideta}">
+                                <p:dataTable id="soliempresaTable"  widgetVar="soliempresaTable" var="soli" value="#{bDetasolitudempresa.cargardetalle_solicitud_empresa}" emptyMessage="#{msg.solidetaempresavacio}" paginator="true" rows="5" rowsPerPageTemplate="10,15,20" resizableColumns="true" >
+                                    <f:facet name="header">  
+                                             Lista Detalles Solicitud Empresa  
+                                    </f:facet>              
+                                    <p:column sortBy="#{soli.id_detalle_solicitud_empresa}"  filterBy="#{soli.id_detalle_solicitud_empresa}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Identificador"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.id_detalle_solicitud_empresa}"/>
+                                    </p:column>   
+                                    <p:column sortBy="#{soli.obj_em.nombre_empresa}"  filterBy="#{soli.obj_em.nombre_empresa}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Empresa"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.obj_em.nombre_empresa}"/>
+                                    </p:column>  
+                                    
+                                    <p:column sortBy="#{soli.nombre_solicitud}"  filterBy="#{soli.nombre_solicitud}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre Solicitud"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.nombre_solicitud}"/>
+                                    </p:column> 
+                                    
+                                    
+                                    <p:column sortBy="#{soli.obj_re.nombre_responsable}"  filterBy="#{soli.obj_re.nombre_responsable}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Responsable"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.obj_re.nombre_responsable}"/>
+                                    </p:column> 
+                                    <p:column sortBy="#{soli.obj_pro.nombre_proyecto}"  filterBy="#{soli.obj_pro.nombre_proyecto}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Proyecto"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.obj_pro.nombre_proyecto}"/>
+                                    </p:column> 
+                                    <p:column sortBy="#{soli.obj_ar.nombre_articulo}"  filterBy="#{soli.obj_ar.nombre_articulo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Articulo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.obj_ar.nombre_articulo}"/>
+                                    </p:column> 
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.fecha_solicitud_empresa}"/>
+                                    </p:column>
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Estado Solicitud"/>
+                                        </f:facet>
+                                        <h:outputText value="#{soli.estado_solicitud_empresa}"/>
+                                    </p:column> 
+                                    
+                                    <p:column style="width: 4%">
+                                        <p:commandButton id="selectButton" icon="ui-icon-search" title="Detalles" update=":tabsoliempresa:form_listar:displaysoli" oncomplete="soliDialog.show()">
+                                            <f:setPropertyActionListener value="#{soli}" target="#{bDetasolitudempresa.selectedSoliempresa}"/>                                            
+                                        </p:commandButton>
+                                       
+                                    </p:column> 
+                                </p:dataTable>
+                                
+                                <p:panel header="Exportar Todos los Datos">
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png"/>
+                                        <p:dataExporter type="xls" target="soliempresaTable" fileName="detalle empresa"/>
+                                    </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png"/>
+                                        <p:dataExporter type="pdf" target="soliempresaTable" fileName="detalle empresa"/>
+                                    </h:commandLink>
+                                </p:panel>
+                                <p:dialog header="Detalle De La Solicitud Empresa" widgetVar="soliDialog" resizable="false" id="soliDlg" showEffect="fade" hideEffect="explode" modal="false">
+                                    <h:panelGrid id="displaysoli" columns="2" cellpadding="4" style="margin: 0 auto;">
+                                        <h:outputText value="Identificador:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.id_detalle_solicitud_empresa}" style="font-weight: bold"/>
+                                        <h:outputText value="Codigo Empresa:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.obj_em.cod_empresa}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Empresa:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.obj_em.nombre_empresa}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Solicitud:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.nombre_solicitud}" style="font-weight: bold"/>
+                                     
+                                        <h:outputText value="Nombre Responsable:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.obj_re.nombre_responsable}" style="font-weight: bold"/>
+                                        <h:outputText value="Apellido Responsable:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.obj_re.apellido_responsable}" style="font-weight: bold"/>
+                                        <h:outputText value="Proyecto:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.obj_pro.id_proyecto}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Proyecto:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.obj_pro.nombre_proyecto}" style="font-weight: bold"/>
+                                        <h:outputText value="Codigo Articulo:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.obj_ar.cod_articulo}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Articulo:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.obj_ar.nombre_articulo}" style="font-weight: bold"/>
+                                        <h:outputText value="Fecha Solicitud:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.fecha_solicitud_empresa}" style="font-weight: bold"/>
+                                        <h:outputText value="Estado Solicitud:"/>
+                                        <h:outputText value="#{bDetasolitudempresa.selectedSoliempresa.estado_solicitud_empresa}" style="font-weight: bold"/>
+                                    </h:panelGrid>
+                                </p:dialog>                                          
+                            </p:panel>
+                        </h:form>
+                     </p:tab><!-- FIN LISTADO -->
+                     <p:tab id="tabEditar" title="#{msg.editar}"> 
+                         <h:form id="form_editar2">                 
+                            <p:panel id="editar_detasoliemp2" header="Edicion Solicitud Empresa">                 
+                                <p:dataTable id="detasoliempTableEdit2"   widgetVar="detasoliempTableEdit2"
+                                             var="dse" value="#{bDetasolitudempresa.cargardetalle_solicitud_empresa}" paginator="true" 
+                                             rows="5"       editable="true"             
+                                             emptyMessage="No Responsables encontrados"
+                                             rowsPerPageTemplate="10,15,20" 
+                                             resizableColumns="true"
+                                             >                                                          
+                                    <p:column headerText="Identificador" footerText="Identificador" sortBy="#{dse.id_detalle_solicitud_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.id_detalle_solicitud_empresa}" />
+
+                                    </p:column>
+                                    <p:column headerText="Empresa" footerText="Empresa" sortBy="#{dse.obj_em.nombre_empresa}" filterBy="#{dse.obj_em.nombre_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.obj_em.nombre_empresa}" />
+                                    </p:column>
+                                    <p:column headerText="Nombre Solicitud" footerText="Nombre Solicitud" sortBy="#{dse.nombre_solicitud}" filterBy="#{dse.nombre_solicitud}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.nombre_solicitud}" />
+                                    </p:column>
+                                    <p:column headerText="Responsable" footerText="Responsable" sortBy="#{dse.obj_re.nombre_responsable}" filterBy="#{dse.obj_re.nombre_responsable}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.obj_re.nombre_responsable} #{dse.obj_re.apellido_responsable}" />
+                                    </p:column>
+
+                                    <p:column headerText="proyecto" footerText="proyecto" sortBy="#{dse.obj_pro.nombre_proyecto}" filterBy="#{dse.obj_pro.nombre_proyecto}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.obj_pro.nombre_proyecto}" />
+                                    </p:column>
+
+                                    <p:column headerText="Articulo" footerText="Articulo" sortBy="#{dse.obj_ar.nombre_articulo}" filterBy="#{dse.obj_ar.nombre_articulo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.obj_ar.nombre_articulo}" />
+                                    </p:column>
+                                    <p:column headerText="Fecha Solicitud" footerText="Fecha Solicitud" sortBy="#{dse.fecha_solicitud_empresa}" filterBy="#{dse.fecha_solicitud_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.fecha_solicitud_empresa}" />
+                                    </p:column>
+                                    <p:column headerText="Estado" footerText="Estado" sortBy="#{dse.estado_solicitud_empresa}" filterBy="#{dse.estado_solicitud_empresa}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.estado_solicitud_empresa}" />
+                                    </p:column>
+                                    
+
+
+
+                                    <p:column style="width:4%" headerText="Opcion" >  
+                                        <p:commandButton update=":tabsoliempresa:form_actualizar:actualizar_Soliempresa2" oncomplete="docDialog2.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{dse}" target="#{bDetasolitudempresa.selectedSoliempresa}" />  
+                                        </p:commandButton>  
+                                    </p:column>                   
+                                </p:dataTable>
+                            </p:panel>
+                        </h:form>
+                        <h:form id="form_actualizar">                              
+                            <p:dialog header="Actualizando Empresa" widgetVar="docDialog2" resizable="false" id="docDlg2"  
+                                      showEffect="fade" hideEffect="explode" modal="false">    
+                                <p:panel id="actualizar_Soliempresa2"> 
+                                    <p:growl sticky="true"  showDetail="true"/>                  
+                                    <h:panelGrid columns="2" cellpadding="4" style="margin:0 auto;">   
+                                        <h:outputText value="Identificadpr:" />  
+                                        <p:inputText value="#{bDetasolitudempresa.selectedSoliempresa.id_detalle_solicitud_empresa}" style="font-weight:bold" required="true"/>    
+                                        
+                                        <h:outputText value="Codigo Empresa:" />  
+                                        <p:selectOneMenu value="#{bDetasolitudempresa.selectedSoliempresa.obj_em.cod_empresa}"  panelStyle="width:250px"  
+                                                         effect="fade" style="width:160px"  required="true" >  
+                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                            <f:selectItems value="#{bEmpresa.cargarComboEmpxActivo}" var="x" itemLabel="#{x.cod_empresa} - #{x.nombre_empresa}" itemValue="#{x.cod_empresa}" />                
+
+                                        </p:selectOneMenu> 
+                                        <h:outputText value="Nombre Solicitud:" />  
+                                        <p:inputText value="#{bDetasolitudempresa.selectedSoliempresa.nombre_solicitud}" style="font-weight:bold" required="true">  
+                                            <f:validateLength minimum="2" maximum="60"/>
+                                        </p:inputText>
+
+                                        <h:outputText value="Codigo Responsable:" />  
+                                        <p:selectOneMenu value="#{bDetasolitudempresa.selectedSoliempresa.obj_re.cod_responsable}"  panelStyle="width:250px"  
+                                                         effect="fade" style="width:160px"  required="true" >  
+                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                            <f:selectItems value="#{bResponsable.cargarComboRespoxactivo}" var="va" itemLabel="#{va.cod_responsable} - #{va.nombre_responsable} #{va.apellido_responsable}" itemValue="#{va.cod_responsable}" />                
+                                        </p:selectOneMenu>
+                                            <h:outputText value="Id Proyecto:" />  
+                                            <p:selectOneMenu value="#{bDetasolitudempresa.selectedSoliempresa.obj_pro.id_proyecto}"  panelStyle="width:250px"  
+                                                         effect="fade" style="width:160px"  required="true" >  
+                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                            <f:selectItems value="#{bProyecto.cargarComboPro}" var="v" itemLabel="#{v.id_proyecto} - #{v.nombre_proyecto}" itemValue="#{v.id_proyecto}" />                
+                                            </p:selectOneMenu>
+                                            <h:outputText value="Codigo Articulo:" />  
+                                            <p:selectOneMenu value="#{bDetasolitudempresa.selectedSoliempresa.obj_ar.cod_articulo}"  panelStyle="width:250px"  
+                                                         effect="fade" style="width:160px"  required="true" >  
+                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                            <f:selectItems value="#{bArticulo.cargarComboArt}" var="z" itemLabel="#{z.cod_articulo} - #{z.nombre_articulo}" itemValue="#{z.cod_articulo}" />                
+                                            </p:selectOneMenu>
+                                        <h:outputText value="Fecha Solicitud:" />  
+                                        <p:calendar effect="explode" value="#{bDetasolitudempresa.selectedSoliempresa.fecha_solicitud_empresa}"  style="font-weight:bold" required="true"/>
+
+                                        <h:outputText value="Estado" /> 
+                                        <p:selectOneMenu value="#{bDetasolitudempresa.selectedSoliempresa.estado_solicitud_empresa}" required="true">  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                            <f:selectItem itemLabel="0 - ACTIVO" itemValue="0" />  
+                                            <f:selectItem itemLabel="1 - NO ACTIVO" itemValue="1" />  
+                                        </p:selectOneMenu>  
+
+
+                                       
+
+                                        <p:commandButton  value="Actualizar" id="updateDetasoliempresa" actionListener="#{bDetasolitudempresa.doActualizarSolicitudEmpresa()}" update="actualizar_Soliempresa2" />
+                                    </h:panelGrid>                      
+                                </p:panel>
+                            </p:dialog>                  
+                        </h:form>
+                     </p:tab>
+                 
+                </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

@@ -1,0 +1,317 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+         xmlns:p= "http://primefaces.org/ui"
+           xmlns:ui= "http://java.sun.com/jsf/facelets"> 
+    <h:head>
+        
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+    <ui:define name="content">    
+        <h:outputText value="Detalle Solicitud Proveedor"  styleClass="subtitulocabecera"/>  
+        <p:tabView id="tabDesopro">  
+            <p:tab id="tab1" title="Presentacion">  
+            <h:form>   
+                    <p:growl id="growl" showDetail="true" />    
+                    <p:fieldset legend="Descripcion" toggleable="true" toggleSpeed="500">  
+                     <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl" />  
+                     
+                    </p:fieldset>    
+                 </h:form>   
+                  
+            </p:tab> 
+            <p:tab id="tab2" title="Registrar" >              
+                <p:fieldset legend="Respecto de Detalle Solicitud Proveedor"> 
+                    <h:form  id="registrar">                       
+                        
+                        <p:growl id="growl" sticky="true" showDetail="true"/>  
+                        <p:wizard widgetVar="wiz"  flowListener="#{bDetallesolicitudproveedor.onFlowProcess}">                  
+                        <p:tab id="registro" title="Datos de Registro">
+                         <p:panel header="Registro">  
+                            <h:panelGrid columns="2" cellpadding="4"  cellspacing="4">
+                            
+                                <h:outputText  value="(*) Fecha De Solicitud Proveedor"/>
+                                                <h:panelGroup>
+                                                    <p:calendar effect="explode" value="#{bDetallesolicitudproveedor.detaproveedor_a.fecha_solicitud_proveedor}" required="true"/>
+                                                </h:panelGroup>  
+                            
+                                
+                              <h:outputText value="(*) Estado Solicitud" /> 
+                              <p:selectOneMenu value="#{bDetallesolicitudproveedor.detaproveedor_a.estado_solicitud_proveedor}" style="width: 150px;">  
+                                         <f:selectItem itemLabel="Eligir Opcion" itemValue="" />
+                                         <f:selectItem itemLabel="1 - CERRADO" itemValue="1" /> 
+                                         <f:selectItem itemLabel="0 - ABIERTO" itemValue="0" />  
+                                          
+                                         
+                                       </p:selectOneMenu>
+          
+                        </h:panelGrid>  
+                    <p:commandButton  value="Limpiar" type="reset"/>
+                      </p:panel>
+                        </p:tab>                            
+                        <p:tab id="detallepro" title="Detalle Solicitud">
+                           <p:panel header="Detalle Proveedor"> 
+                            <h:panelGrid columns="1" cellpadding="4"  cellspacing="4">
+                            <h:outputText  value="(*)Proveedor"/>
+                             <h:panelGroup>                                                       
+                                 <p:selectOneMenu value="#{bDetallesolicitudproveedor.detaproveedor_a.obj_ve.id_proveedor}"  panelStyle="width:250px"  
+                                      effect="fade" style="width:160px"  required="true" id="pro_detalle">  
+                                    <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                    <f:selectItems value="#{bProveedor.cargarComboProveedorxactivo}" var="variable" itemLabel="#{variable.nombre_proveedor}" itemValue="#{variable.id_proveedor}" />                
+                                    
+                          </p:selectOneMenu>  
+                           <p:tooltip for="pro_detalle" showEvent="focus" hideEvent="blur" />              
+                           <p:growl  for="pro_detalle" showDetail="true" />             
+                               </h:panelGroup> 
+                            
+                              
+                              
+                              <h:outputText  value="(*)Articulo"/>
+                             <h:panelGroup>                                                       
+                                 <p:selectOneMenu value="#{bDetallesolicitudproveedor.detaproveedor_a.obj_ar.cod_articulo}"  panelStyle="width:250px"  
+                                      effect="fade" style="width:160px"  required="true" id="art_detalle">  
+                                    <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                    <f:selectItems value="#{bArticulo.cargarComboArt}" var="variable" itemLabel="#{variable.nombre_articulo}" itemValue="#{variable.cod_articulo}" />                
+                                    
+                          </p:selectOneMenu>  
+                           <p:tooltip for="art_detalle" showEvent="focus" hideEvent="blur" />              
+                           <p:growl  for="art_detalle" showDetail="true" />             
+                               </h:panelGroup>
+                            
+                             <h:outputText  value="(*)Solicitud"/>
+                             <h:panelGroup>                                                       
+                                 <p:selectOneMenu value="#{bDetallesolicitudproveedor.detaproveedor_a.obj_ds.cod_solicitud}"  panelStyle="width:250px"  
+                                      effect="fade" style="width:160px"  required="true" id="s_detalle">  
+                                    <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                    <f:selectItems value="#{bSolicitud.cargarComboSoli}" var="variable" itemLabel="#{variable.nombre_solicitud}" itemValue="#{variable.cod_solicitud}" />                
+                                    
+                          </p:selectOneMenu>  
+                           <p:tooltip for="s_detalle" showEvent="focus" hideEvent="blur" />              
+                           <p:growl  for="s_detalle" showDetail="true" />             
+                               </h:panelGroup>
+                              
+                             
+                             
+                             
+                                </h:panelGrid>
+                               
+                               
+                               
+                               <p:commandButton  value="Registrar" id="saveDetalle" actionListener="#{bDetallesolicitudproveedor.doRegistrardetalle_solicitud_proveedor()}" update="growl" />
+                         
+                           </p:panel>
+                            </p:tab>   
+                      </p:wizard>
+                    
+                    </h:form>
+                </p:fieldset>
+            </p:tab> 
+            <p:tab id="tabListado" title="#{msg.listar}" >
+            <p:growl sticky="true"  showDetail="true"/>
+            <h:form id="form_listar">
+                <p:panel id="listar_detalleproveedor" header="Listando solicitud proveedor">
+                    <p:dataTable id="desoproTable"   widgetVar="desoproTable" var="dsp" value="#{bDetallesolicitudproveedor.cargardetalle_solicitud_proveedor}" paginator="true" rows="5" emptyMessage="No Solicitudes De Proveedor Encontradas" rowsPerPageTemplate="10,15,20" resizableColumns="true">
+                    
+                             <f:facet name="header">  
+                                Lista Solicitud De Proveedor
+                            </f:facet> 
+                        
+                        <p:column sortBy="#{dsp.id_detalle_proveedor}"   filterBy="#{dsp.id_detalle_proveedor}" filterMatchMode="contains">  
+                             <f:facet name="header">  
+                            <h:outputText value="Identificador" />  
+                            </f:facet>
+                            <h:outputText value="#{dsp.id_detalle_proveedor}" />
+                        </p:column>
+                        
+                        <p:column sortBy="#{dsp.obj_ve.nombre_proveedor}"   filterBy="#{dsp.obj_ve.nombre_proveedor}" filterMatchMode="contains">  
+                             <f:facet name="header">  
+                            <h:outputText value="Proveedor" />  
+                            </f:facet>
+                            <h:outputText value="#{dsp.obj_ve.nombre_proveedor}" />
+                        </p:column>
+                    
+                        <p:column sortBy="#{dsp.obj_ar.nombre_articulo}"  filterBy="#{dsp.obj_ar.nombre_articulo}" filterMatchMode="contains">  
+                             <f:facet name="header">  
+                            <h:outputText value="Articulo" />  
+                            </f:facet>
+                            <h:outputText value="#{dsp.obj_ar.nombre_articulo}" />
+                        </p:column>
+                        
+                        <p:column sortBy="#{dsp.obj_ds.nombre_solicitud}"  filterBy="#{dsp.obj_ds.nombre_solicitud}" filterMatchMode="contains">  
+                             <f:facet name="header">  
+                            <h:outputText value="Solicitud" />  
+                            </f:facet>
+                            <h:outputText value="#{dsp.obj_ds.nombre_solicitud}" />
+                        
+                        </p:column>
+                        
+                        <p:column>  
+                            <f:facet name="header">  
+                            <h:outputText value="Fecha Solicitud" />  
+                            </f:facet>
+                            <h:outputText value="#{dsp.fecha_solicitud_proveedor}" />
+                        </p:column>
+                        <p:column>  
+                            <f:facet name="header">  
+                            <h:outputText value="Estado Solicitud" />  
+                            </f:facet>
+                            <h:outputText value="#{dsp.estado_solicitud_proveedor}" />
+                        </p:column>
+                    <p:column exportable="false" style="width:4%" >  
+                        <p:commandButton id="selectButton" update=":tabDesopro:form_listar:displaydsp" oncomplete="dspDialog.show()" icon="ui-icon-search" title="Detalles">  
+                            <f:setPropertyActionListener value="#{dsp}" target="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor}" />  
+                    </p:commandButton>  
+                </p:column> 
+                    </p:dataTable> 
+                   <p:panel header="Exportar Todos los Datos">  
+                    <h:commandLink>  
+                        <p:graphicImage value="#{msg.ruta_img}excel.png" />  
+                         <p:dataExporter type="xls" target="desoproTable" fileName="Detalles Solicitud Proveedor" />  
+                        </h:commandLink>    
+                        <h:commandLink>  
+                        <p:graphicImage value="#{msg.ruta_img}pdf.png" />  
+                        <p:dataExporter type="pdf" target="desoproTable" fileName="Detalles Solicitud Proveedor"/>  
+                        </h:commandLink>           
+                        
+                   </p:panel>               
+               
+                      <p:dialog header="Detalle Solicitud Proveedor" widgetVar="dspDialog" resizable="false" id="dspDlg"  
+                showEffect="fade" hideEffect="explode" modal="false">    
+                <h:panelGrid id="displaydsp" columns="2" cellpadding="4" style="margin:0 auto;">   
+                      <h:outputText value="Identificador:" />  
+                      <h:outputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.id_detalle_proveedor}" style="font-weight:bold"/>    
+                    <h:outputText value="Codigo Proveedor:" />  
+                    <h:outputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.obj_ve.id_proveedor}" style="font-weight:bold"/>    
+                    <h:outputText value="Nombre Proveedor:" />  
+                    <h:outputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.obj_ve.nombre_proveedor}" style="font-weight:bold"/>    
+                    
+                    <h:outputText value="Codigo Articulo:" />  
+                    <h:outputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.obj_ar.cod_articulo}" style="font-weight:bold"/>   
+                    <h:outputText value="Nombre Articulo:" />  
+                    <h:outputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.obj_ar.nombre_articulo}" style="font-weight:bold"/>  
+                   <h:outputText value="Codigo Solicitud:" />  
+                   <h:outputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.obj_ds.cod_solicitud}" style="font-weight:bold"/>
+                    <h:outputText value="Nombre Solicitud:" />  
+                    <h:outputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.obj_ds.nombre_solicitud}" style="font-weight:bold"/>
+                    <h:outputText value="Fecha Solicitud:" />  
+                    <h:outputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.fecha_solicitud_proveedor}" style="font-weight:bold"/>  
+                    <h:outputText value="Estado Solicitud:" />  
+                    <h:outputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.estado_solicitud_proveedor}" style="font-weight:bold"/>  
+                      
+                </h:panelGrid>    
+            </p:dialog> 
+                </p:panel>
+            </h:form>
+            </p:tab>
+            
+            <p:tab id="tabEditar" title="#{msg.editar}"> 
+                         <h:form id="form_editar2">                 
+                            <p:panel id="editar_detasolipro2" header="Edicion Solicitud Proveedor">                 
+                                <p:dataTable id="detasoliproTableEdit2"   widgetVar="detasoliempTableEdit2"
+                                             var="dse" value="#{bDetallesolicitudproveedor.cargardetalle_solicitud_proveedor}" paginator="true" 
+                                             rows="5"       editable="true"             
+                                             emptyMessage="No Responsables encontrados"
+                                             rowsPerPageTemplate="10,15,20" 
+                                             resizableColumns="true"
+                                             >                                                          
+                                    <p:column headerText="Id_solicitud_Proveedor" footerText="Id_solicitud_Proveedor" sortBy="#{dse.id_detalle_proveedor}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.id_detalle_proveedor}" />
+
+                                    </p:column>
+                                    <p:column headerText="Proveedor" footerText="Proveedor" sortBy="#{dse.obj_ve.nombre_proveedor}" filterBy="#{dse.obj_ve.nombre_proveedor}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.obj_ve.nombre_proveedor}" />
+                                    </p:column>
+                                
+                                    <p:column headerText="Articulo" footerText="Articulo" sortBy="#{dse.obj_ar.nombre_articulo}" filterBy="#{dse.obj_ar.nombre_articulo}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.obj_ar.nombre_articulo}" />
+                                    </p:column>
+
+                                    <p:column headerText="Nombre Solicitud" footerText="Nombre Solicitud" sortBy="#{dse.obj_ds.nombre_solicitud}" filterBy="#{dse.obj_ds.nombre_solicitud}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.obj_ds.nombre_solicitud}" />
+                                    </p:column>
+
+                                    <p:column headerText="Fecha Solicitud" footerText="Fecha Solicitud" sortBy="#{dse.fecha_solicitud_proveedor}" filterBy="#{dse.fecha_solicitud_proveedor}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.fecha_solicitud_proveedor}" />
+                                    </p:column>
+                                    <p:column headerText="Estado" footerText="Estado" sortBy="#{dse.estado_solicitud_proveedor}" filterBy="#{dse.estado_solicitud_proveedor}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{dse.estado_solicitud_proveedor}" />
+                                    </p:column>
+                                    
+                                    
+
+
+
+                                    <p:column style="width:4%" headerText="Opcion" >  
+                                        <p:commandButton update=":tabDesopro:form_actualizar:actualizar_Solipro2" oncomplete="docDialog2.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{dse}" target="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor}" />  
+                                        </p:commandButton>  
+                                    </p:column>                   
+                                </p:dataTable>
+                            </p:panel>
+                        </h:form>
+                        <h:form id="form_actualizar">                              
+                            <p:dialog header="Actualizando Proveedor" widgetVar="docDialog2" resizable="false" id="docDlg2"  
+                                      showEffect="fade" hideEffect="explode" modal="false">    
+                                <p:panel id="actualizar_Solipro2"> 
+                                    <p:growl sticky="true"  showDetail="true"/>                  
+                                    <h:panelGrid columns="2" cellpadding="4" style="margin:0 auto;">   
+                                        <h:outputText value="Id Solicitud Proveedor:" />  
+                                        <p:inputText value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.id_detalle_proveedor}" style="font-weight:bold" required="true"/>    
+                                        
+                                        <h:outputText value="Id Proveedor:" />  
+                                        <p:selectOneMenu value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.obj_ve.id_proveedor}"  panelStyle="width:250px"  
+                                                         effect="fade" style="width:160px"  required="true" >  
+                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                            <f:selectItems value="#{bProveedor.cargarComboProveedorxactivo}" var="x" itemLabel="#{x.id_proveedor}-#{x.nombre_proveedor}" itemValue="#{x.id_proveedor}" />                
+
+                                        </p:selectOneMenu> 
+                                       
+                                        
+                                        <h:outputText value="Cod Articulo:" />  
+                                        <p:selectOneMenu value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.obj_ar.cod_articulo}"  panelStyle="width:250px"  
+                                                         effect="fade" style="width:160px"  required="true" >  
+                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                            <f:selectItems value="#{bArticulo.cargarComboArt}" var="va" itemLabel="#{va.cod_articulo}-#{va.nombre_articulo}" itemValue="#{va.cod_articulo}" />                
+                                        </p:selectOneMenu>
+                                        
+                                        
+                                            <h:outputText value="Cod Solicitud:" />  
+                                            <p:selectOneMenu value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.obj_ds.cod_solicitud}"  panelStyle="width:250px"  
+                                                         effect="fade" style="width:160px"  required="true" >  
+                                            <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                            <f:selectItems value="#{bSolicitud.cargarComboSoli}" var="j" itemLabel="#{j.cod_solicitud}-#{j.nombre_solicitud}" itemValue="#{j.cod_solicitud}" />                
+                                        </p:selectOneMenu>                       
+
+                                            
+                                            
+                                        <h:outputText value="Fecha Solicitud:" />  
+                                        <p:calendar effect="explode" value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.fecha_solicitud_proveedor}"  style="font-weight:bold" required="true"/>
+
+                                        <h:outputText value="Estado" /> 
+                                        <p:selectOneMenu value="#{bDetallesolicitudproveedor.selecteddetalle_solicitud_proveedor.estado_solicitud_proveedor}" required="true">  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                            <f:selectItem itemLabel="0 - ACTIVO" itemValue="0" />  
+                                            <f:selectItem itemLabel="1 - NO ACTIVO" itemValue="1" />  
+                                        </p:selectOneMenu>  
+
+
+                                       
+
+                                        <p:commandButton  value="Actualizar" id="updateDetasolipro" actionListener="#{bDetallesolicitudproveedor.doActualizarSolicitudProveedor()}" update="actualizar_Solipro2" />
+                                    </h:panelGrid>                      
+                                </p:panel>
+                            </p:dialog>                  
+                        </h:form>
+                     </p:tab>
+            
+            
+        </p:tabView>
+    </ui:define>
+        </ui:composition>
+        
+    </h:body>
+</html>
+

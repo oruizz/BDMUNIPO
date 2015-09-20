@@ -1,0 +1,277 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+                <h:outputText value="Almacen" styleClass="subtitulocabecera"/>
+                <p:tabView id="tabAlmacen">
+                    <p:tab id="tab1" title="Presentacion">                  
+                        <h:form>
+                            <p:growl id="growl" showDetail="true"/>
+                            <p:fieldset legend="#{msg.descripcion}" toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl"/>
+                            </p:fieldset>
+                        </h:form>                    
+                    </p:tab>
+
+
+                    <p:tab id="tab2" title="Registrar Almacen">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                            <h:form id="registrar">
+                                <p:panel id="nuevo_almacen" header="Datos Del Almacen">
+                                    <p:growl sticky="true" showDetail="true"/>
+                                    <h:panelGrid columns="1">
+                                      
+                                        <h:outputLabel for="nombre_almacen" value="(*)Nombre Del Almacen"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bAlmacen.almacen_a.nombre}" id="nombre_almacen" required="true" title="Máximo 40 Caracteres" >
+                                                <f:validateLength minimum="2" maximum="40"/>
+                                            </p:inputText>                                                   
+                                            <p:tooltip for="nombre_almacen" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="nombre_almacen" display="icon"/>
+                                        </h:panelGroup>
+
+                                        <h:outputLabel for="telefono" value="(*)Telefono Del Almacen"/>
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bAlmacen.almacen_a.telefono_almacen}" id="telefono"  mask="99-99-99" title="Formato:000000"  required="true" size="10">       
+                                            </p:inputMask>
+                                            <p:tooltip for="telefono" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="telefono" display="icon"/>
+                                        </h:panelGroup>
+
+                                        <h:outputLabel for="_direccion_almacen" value="(*)Direccion Del Almacen"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bAlmacen.almacen_a.direccion_almacen}" id="direccion_almacen" required="true" title="Máximo 50 Caracteres" >
+                                                <f:validateLength minimum="2" maximum="40"/>
+                                            </p:inputText>                                                   
+                                            <p:tooltip for="direccion_almacen" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="direccion_almacen" display="icon"/>
+                                        </h:panelGroup>
+
+                                        <h:outputLabel for="fax" value="(*)Fax Del Almacen"/>
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bAlmacen.almacen_a.fax_almacen}" id="fax"  mask="999-9999" title="Formato:0000000"  required="true" size="10">       
+                                            </p:inputMask>
+                                            <p:tooltip for="fax" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="fax" display="icon"/>
+                                        </h:panelGroup>
+
+                                     
+                                        <h:outputText value="(*) Estado Almacen " /> 
+                                        <p:selectOneMenu value="#{bAlmacen.almacen_a.estado_almacen}" style="width: 150px;">  
+                                         <f:selectItem itemLabel="Eligir Opcion" itemValue="" />
+                                         <f:selectItem itemLabel="1 - NO VIGENTE" itemValue="1" /> 
+                                         <f:selectItem itemLabel="0 - VIGENTE" itemValue="0" />  
+                                          
+                                         
+                                       </p:selectOneMenu>
+
+                                        <p:commandButton value="Registrar" id="saveAlmacen" actionListener="#{bAlmacen.doregistra_almacen}" update="nuevo_almacen"/>     
+                                    </h:panelGrid> 
+
+                                </p:panel>
+
+                            </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+                    <!--LISTAR EMPRESA-->                
+                    <p:tab id="tabListado" title="#{msg.listar}">                            
+                        <p:growl sticky="true" showDetail="true"/><!--MUESTRA MENSAJE DE ERROR-->
+                        <h:form id="form_listar">
+                            <p:panel id="listar_almacen" header="#{msg.listaalma}">
+                                <p:dataTable id="almacenTable" var="al" value="#{bAlmacen.cargarAlmacen}" emptyMessage="#{msg.almavacio}" paginator="true" rows="5" rowsPerPageTemplate="10,15,20">
+                                    <f:facet name="header">  
+                                        Lista De Almacenes  
+                                    </f:facet> 
+                                    <p:column sortBy="#{al.cod_almacen}"  filterBy="#{al.cod_almacen}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Codigo Almacen"/>
+                                        </f:facet>
+                                        <h:outputText value="#{al.cod_almacen}"/>
+                                    </p:column>      
+
+                                    <p:column sortBy="#{al.nombre}"  filterBy="#{al.nombre}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre Almacen"/>
+                                        </f:facet>
+                                        <h:outputText value="#{al.nombre}"/>
+                                    </p:column> 
+
+                                    <p:column sortBy="#{al.telefono_almacen}"  filterMatchMode="contains">  
+                                        <f:facet name="header">  
+                                            <h:outputText value="Telefono Almacen" />  
+                                        </f:facet>
+                                        <h:outputText value="#{al.telefono_almacen}" />
+                                    </p:column>
+
+                                    <p:column sortBy="#{al.direccion_almacen}"  filterBy="#{al.direccion_almacen}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Direccion Almacen"/>
+                                        </f:facet>
+                                        <h:outputText value="#{al.direccion_almacen}"/>
+                                    </p:column> 
+
+                                    <p:column sortBy="#{al.fax_almacen}"  filterMatchMode="contains">  
+                                        <f:facet name="header">  
+                                            <h:outputText value="Fax Almacen" />  
+                                        </f:facet>
+                                        <h:outputText value="#{al.fax_almacen}" />
+                                    </p:column>
+
+                                    <p:column sortBy="#{al.estado_almacen}"  filterBy="#{al.estado_almacen}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Estado Almacen"/>
+                                        </f:facet>
+                                        <h:outputText value="#{al.estado_almacen}"/>
+                                    </p:column> 
+
+                                    <p:column style="width: 4%">
+                                        <p:commandButton id="selectButton" icon="ui-icon-search" title="Detalles" update=":tabAlmacen:form_listar:displayal" oncomplete="alDialog.show()">
+                                            <f:setPropertyActionListener value="#{al}" target="#{bAlmacen.selectedAlmacen}"/>                                            
+                                        </p:commandButton>
+
+                                    </p:column> 
+                                </p:dataTable>
+
+                                <p:panel header="Exportar Todos los Datos">
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png"/>
+                                        <p:dataExporter type="xls" target="almacenTable" fileName="almacen"/>
+                                    </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png"/>
+                                        <p:dataExporter type="pdf" target="almacenTable" fileName="almacen"/>
+                                    </h:commandLink>
+                                </p:panel>
+                                <p:dialog header="Detalle Del Almacen" widgetVar="alDialog" resizable="false" id="alDlg" showEffect="fade" hideEffect="explode" modal="false">
+                                    <h:panelGrid id="displayal" columns="2" cellpadding="4" style="margin: 0 auto;">
+
+                                        <h:outputText value="Codigo Almacen:"/>
+                                        <h:outputText value="#{bAlmacen.selectedAlmacen.cod_almacen}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Almacen:"/>
+                                        <h:outputText value="#{bAlmacen.selectedAlmacen.nombre}" style="font-weight: bold"/>
+                                        <h:outputText value="Telefono Almacen:"/>
+                                        <h:outputText value="#{bAlmacen.selectedAlmacen.telefono_almacen}" style="font-weight: bold"/>
+                                        <h:outputText value="Direccion Almacen:"/>
+                                        <h:outputText value="#{bAlmacen.selectedAlmacen.direccion_almacen}" style="font-weight: bold"/>
+                                        <h:outputText value="Fax Almacen:"/>
+                                        <h:outputText value="#{bAlmacen.selectedAlmacen.fax_almacen}" style="font-weight: bold"/>
+                                        <h:outputText value="Estado Almacen:"/>
+                                        <h:outputText value="#{bAlmacen.selectedAlmacen.estado_almacen}" style="font-weight: bold"/>
+
+                                    </h:panelGrid>
+                                </p:dialog>                                          
+                            </p:panel>
+                        </h:form>
+                    </p:tab><!-- FIN LISTADO -->
+                    <p:tab id="tabEditar" title="#{msg.editar}"> 
+                        <p:growl sticky="true"  showDetail="true"/>
+                        <h:form id="form_editar2">                 
+                            <p:panel id="editar_almacen" header="Edicion Almacen">                 
+                                <p:dataTable id="almacenTableEdit2"   widgetVar="almacenTableEdit2"
+                                             var="alm" value="#{bAlmacen.cargarAlmacen}" paginator="true" 
+                                             rows="5"       editable="true"             
+                                             emptyMessage="No Empresas encontradas"
+                                             rowsPerPageTemplate="10,15,20" 
+                                             resizableColumns="true"
+                                             >                                                          
+                                    <p:column headerText="cod_almacen" footerText="cod_almacen" sortBy="#{alm.cod_almacen}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{alm.cod_almacen}" />
+                                    </p:column>
+
+                                    <p:column headerText="Nombre Almacen" footerText="Nombre Almacen" sortBy="#{alm.nombre}" filterBy="#{alm.nombre}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{alm.nombre}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Telefono Almacen" footerText="Telefono_Almacen" sortBy="#{alm.telefono_almacen}" filterBy="#{alm.telefono_almacen}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{alm.telefono_almacen}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Direccion Almacen" footerText="Direccion Almacen" sortBy="#{alm.direccion_almacen}" filterBy="#{alm.direccion_almacen}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{alm.direccion_almacen}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Fax Almacen" footerText="Fax Almacen" sortBy="#{alm.fax_almacen}" filterBy="#{alm.fax_almacen}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{alm.fax_almacen}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Estado Almacen" footerText="Estado Almacen" sortBy="#{alm.estado_almacen}" filterBy="#{alm.estado_almacen}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{alm.estado_almacen}" />
+
+                                    </p:column>
+
+                                    <p:column style="width:4%" headerText="Opcion" >  
+                                        <p:commandButton id="selectButton2" update=":tabAlmacen:form_actualizar:actualizar_Almacen2" oncomplete="empDialog2.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{alm}" target="#{bAlmacen.selectedAlmacen}" />  
+                                        </p:commandButton>  
+                                    </p:column>
+                                </p:dataTable>
+                            </p:panel>
+                        </h:form>
+                        <h:form id="form_actualizar">                              
+                            <p:dialog header="Actualizando Almacen" widgetVar="empDialog2" resizable="false" id="empDlg2"  
+                                      showEffect="fade" hideEffect="explode" modal="false">    
+                                <p:panel id="actualizar_Almacen2"> 
+                                    <p:growl sticky="true"  showDetail="true"/>                  
+                                    <h:panelGrid columns="2" cellpadding="4" style="margin:0 auto;">   
+
+                                        <h:outputText value="Codigo Almacen:"/>
+                                        <p:inputText value="#{bAlmacen.selectedAlmacen.cod_almacen}" style="font-weight: bold" required="true"/>
+                                        <h:outputText value="Nombre Almacen:"/>
+                                        <p:inputText value="#{bAlmacen.selectedAlmacen.nombre}" style="font-weight: bold" required="true">
+                                            <f:validateLength minimum="2" maximum="40"/>
+                                        </p:inputText>
+                                        
+                                        <h:outputLabel for="telefono" value="(*)Telefono Del Almacen"/>
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bAlmacen.selectedAlmacen.telefono_almacen}" id="telefono"  mask="99-99-99" title="Formato:000000"  required="true" size="10" style="font-weight: bold">       
+                                            </p:inputMask>
+                                            <p:tooltip for="telefono" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="telefono" display="icon"/>
+                                        </h:panelGroup>
+                                        
+                                        
+                                        <h:outputText value="Direccion Almacen:"/>
+                                        <p:inputText value="#{bAlmacen.selectedAlmacen.direccion_almacen}" style="font-weight: bold" required="true">
+                                            <f:validateLength minimum="2" maximum="50"/>
+                                        </p:inputText>
+                                        
+                                        <h:outputLabel for="fax" value="(*)Fax Del Almacen"/>
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bAlmacen.selectedAlmacen.fax_almacen}" id="fax"  mask="999-9999" title="Formato:0000000"  required="true" size="10" style="width: 150px;">       
+                                            </p:inputMask>
+                                            <p:tooltip for="fax" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="fax" display="icon"/>
+                                        </h:panelGroup>
+                                     <h:outputText value="Estado Almacen" /> 
+                                     <p:selectOneMenu value="#{bAlmacen.selectedAlmacen.estado_almacen}" style="width: 150px;" required="true">  
+                                         <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                          
+                                        <f:selectItem itemLabel="0 - VIGENTE" itemValue="0" />  
+                                        <f:selectItem itemLabel="1 - NO VIGENTE" itemValue="1" /> 
+                                           
+                                       </p:selectOneMenu> 
+
+                                        <p:commandButton  value="Actualizar" id="updateAlmacen" actionListener="#{bAlmacen.doActualizarAlmacen()}" update="actualizar_Almacen2" />
+                                    </h:panelGrid>                      
+                                </p:panel>
+                            </p:dialog>                  
+                        </h:form> 
+                    </p:tab>
+
+                </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

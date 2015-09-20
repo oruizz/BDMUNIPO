@@ -1,0 +1,198 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+                <h:outputText value="ORDEN DE SALIDA DE MATERIAL" styleClass="subtitulocabecera"/>
+                <p:tabView id="tabdsalidamatepj">
+                    <p:tab id="tab1" title="Presentacion">                  
+                        <h:form>
+                            <p:growl id="growl" showDetail="true"/>
+                            <p:fieldset legend="#{msg.descripcion}" toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl"/>
+                            </p:fieldset>
+                        </h:form>                    
+                    </p:tab>
+
+
+                    <p:tab id="tab2" title="Registrar Orden De Salida De Material">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                            <h:form id="registrar">
+                                <p:panel id="nueva_dsalidamatepj" header="Datos De Registro De Orden">
+                                    <p:growl sticky="true" showDetail="true"/>
+                                    <h:panelGrid columns="1">
+
+                                        <h:outputLabel for="cantidad_material" value="(*)Cantidad Material" />                            
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bsalidamatepj.dsalidapj_a.cantidad_material}" id="cantidad_material" required="true" title="Ingrese Cantidad">
+
+                                            </p:inputText> 
+                                            <p:tooltip for="cantidad_material" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="cantidad_material" display="icon" />                                          
+                                        </h:panelGroup>                                          
+
+
+                                        <h:outputLabel value="(*)Seleccione Detalle Solicitud Persona Juridica" />
+                                        <h:panelGroup>
+                                            <p:selectOneMenu value="#{bsalidamatepj.dsalidapj_a.obj_pj.id_detalle_solicitud_persona_juridica}"  panelStyle="width:250px"  
+                                                             filter="true" filterMatchMode="startsWith"    effect="fade" style="width:160px"  required="true" id="so_arti">  
+                                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                <f:selectItems value="#{bDetasolipersona.cargarCombodesolipersoxactivo}" var="variable" itemLabel="#{variable.id_detalle_solicitud_persona_juridica} - #{variable.nombre_solicitud}" itemValue="#{variable.id_detalle_solicitud_persona_juridica}" />                                                    
+                                                <p:ajax event="change"
+                                                        update="f_articulo"/>
+
+                                            </p:selectOneMenu>
+                                            
+                                            
+
+                                        </h:panelGroup> 
+                                        <h:outputLabel for="f_articulo" value="(*)Seleccione Articulo" />
+                                        <h:panelGroup>
+                                            <p:selectOneMenu value="#{bsalidamatepj.dsalidapj_a.obj_ar.cod_articulo}"  
+                                                             panelStyle="width:250px"  
+                                                             filter="true" filterMatchMode="startsWith"    effect="fade" style="width:160px"  required="true" id="f_articulo">  
+                                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                <f:selectItems value="#{bsalidamatepj.cargarArticuloxSolicitud}" var="variable" itemLabel="#{variable.cod_articulo} - #{variable.nombre_articulo}" itemValue="#{variable.cod_articulo}" />                                                    
+
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup> 
+
+
+                                        
+
+                                        <p:commandButton value="Registrar" id="savedsalidamatepj" actionListener="#{bsalidamatepj.doRegistrardsalida_matepj()}" update="nueva_dsalidamatepj"/>     
+                                    </h:panelGrid> 
+
+                                </p:panel>
+
+                            </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+                    <!--LISTAR EMPRESA-->                
+                    <p:tab id="tabListado" title="#{msg.listar}">                            
+                        <p:growl sticky="true" showDetail="true"/><!--MUESTRA MENSAJE DE ERROR-->
+                        <h:form id="form_listar">
+                            <p:panel id="listar_dsalidamaterialpj" header="Listando Orden De Salida">
+                                <p:dataTable id="dsalidamaterialpjTable" var="pj" value="#{bsalidamatepj.listarDsalida_matepj}" emptyMessage="No se Encontraron" resizableColumns="true" paginator="true" rows="5" rowsPerPageTemplate="10,15,20">
+                                    <f:facet name="header">  
+                                        Lista De Orden De Salida Material 
+                                    </f:facet> 
+
+                                    <p:column sortBy="#{pj}"  filterBy="#{pj.id_salida_matepj}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="ID Salida"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pj.id_salida_matepj}"/>
+                                    </p:column>   
+
+                                    <p:column sortBy="#{pj}"  filterBy="#{pj.cantidad_material}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Cantidad Material"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pj.cantidad_material}"/>
+                                    </p:column>      
+
+
+                                    <p:column sortBy="#{pj.obj_per.nombre_persona}"  filterBy="#{pj.obj_per.nombre_persona}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre Persona"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pj.obj_per.nombre_persona}"/>
+                                    </p:column> 
+
+                                    <p:column sortBy="#{pj.obj_pro.nombre_proyecto}"  filterBy="#{pj.obj_pro.nombre_proyecto}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre Proyecto"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pj.obj_pro.nombre_proyecto}"/>
+                                    </p:column> 
+
+                                    <p:column sortBy="#{pj.obj_ar.nombre_articulo}"  filterBy="#{pj.obj_ar.nombre_articulo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre Articulo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pj.obj_ar.nombre_articulo}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha Salida"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pj.fecha_salida}"/>
+                                    </p:column> 
+
+
+
+
+                                    <p:column style="width: 4%">
+                                        <p:commandButton id="selectButton" icon="ui-icon-search" title="Detalles" update=":tabdsalidamatepj:form_listar:displaypj" oncomplete="pjDialog.show()">
+                                            <f:setPropertyActionListener value="#{pj}" target="#{bsalidamatepj.selecteddsalidapj_a}"/>                                            
+                                        </p:commandButton>
+
+                                    </p:column> 
+                                </p:dataTable>
+
+                                <p:panel header="Exportar Todos los Datos">
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png"/>
+                                        <p:dataExporter type="xls" target="dsalidamatepjTable" fileName="salida"/>
+                                    </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png"/>
+                                        <p:dataExporter type="pdf" target="dsalidamatepjTable" fileName="salida"/>
+                                    </h:commandLink>
+                                </p:panel>
+                                <p:dialog header="Detalle De La Salida Del Articulo" widgetVar="pjDialog" resizable="false" id="pjDlg" showEffect="fade" hideEffect="explode" modal="false">
+                                    <h:panelGrid id="displaypj" columns="2" cellpadding="4" style="margin: 0 auto;">
+                                        <h:outputText value="Codigo De Salida:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.id_salida_matepj}" style="font-weight: bold"/>
+                                        <h:outputText value="Cantida Del Articulo:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.cantidad_material}" style="font-weight: bold"/>
+                                        <h:outputText value="Detalle Solicitud:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.obj_pj.id_detalle_solicitud_persona_juridica}" style="font-weight: bold"/>
+                                        <h:outputText value="Codigo Persona:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.obj_per.cod_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Persona:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.obj_per.nombre_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Codigo Proyecto:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.obj_pro.id_proyecto}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Proyecto:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.obj_pro.nombre_proyecto}" style="font-weight: bold"/>
+
+                                        <h:outputText value="Codigo Articulo:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.obj_ar.cod_articulo}" style="font-weight: bold"/>
+
+                                        <h:outputText value="Nombre Articulo:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.obj_ar.nombre_articulo}" style="font-weight: bold"/>
+
+                                        <h:outputText value="Fecha Salida:"/>
+                                        <h:outputText value="#{bsalidamatepj.selecteddsalidapj_a.fecha_salida}" style="font-weight: bold"/>
+
+
+
+                                    </h:panelGrid>
+                                </p:dialog>                                          
+                            </p:panel>
+                        </h:form>
+                    </p:tab><!-- FIN LISTADO -->
+                    <p:tab id="tabEditar" title="#{msg.editar}"> 
+                        <p:growl sticky="true"  showDetail="true"/>
+
+
+                        <h:form id="form_editar2">                 
+
+                        </h:form>   
+                    </p:tab>
+                </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

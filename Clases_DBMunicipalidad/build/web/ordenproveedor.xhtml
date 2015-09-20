@@ -1,0 +1,199 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+                <h:outputText value="ORDEN DE ENTRADA DE MATERIAL" styleClass="subtitulocabecera"/>
+                <p:tabView id="tabdordenproveedor">
+                    <p:tab id="tab1" title="Presentacion">                  
+                        <h:form>
+                            <p:growl id="growl" showDetail="true"/>
+                            <p:fieldset legend="#{msg.descripcion}" toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl"/>
+                            </p:fieldset>
+                        </h:form>                    
+                    </p:tab>
+
+
+                    <p:tab id="tab2" title="Registrar Orden De Entrada De Material">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                            <h:form id="registrar">
+                                <p:panel id="nueva_dordenproveedor" header="Datos De Registro De Orden">
+                                    <p:growl sticky="true" showDetail="true"/>
+                                    <h:panelGrid columns="1">
+
+                                        <h:outputLabel for="cantidad_material" value="(*)Cantidad Material" />                            
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bordenproveedor.dordenproveedor_a.cantidad_material}" id="cantidad_material" required="true" title="Ingrese Cantidad">
+
+                                            </p:inputText> 
+                                            <p:tooltip for="cantidad_material" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="cantidad_material" display="icon" />                                          
+                                        </h:panelGroup>                                          
+
+
+                                        <h:outputLabel value="(*)Seleccione Detalle Solicitud Proveedor" />
+                                        <h:panelGroup>
+                                            <p:selectOneMenu value="#{bordenproveedor.dordenproveedor_a.obj_pr.id_detalle_proveedor}"  panelStyle="width:250px"  
+                                                             filter="true" filterMatchMode="startsWith"    effect="fade" style="width:160px"  required="true" id="so_pro">  
+                                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                <f:selectItems value="#{bDetallesolicitudproveedor.cargardetalle_solicitud_proveedorxactivo}" var="variable" itemLabel="#{variable.id_detalle_proveedor} - #{variable.obj_ve.nombre_proveedor}" itemValue="#{variable.id_detalle_proveedor}" />                                                    
+                                                <p:ajax event="change"
+                                                        update="f_articulo"/>
+
+                                            </p:selectOneMenu>
+
+
+
+                                        </h:panelGroup> 
+                                        <h:outputLabel for="f_articulo" value="(*)Seleccione Articulo" />
+                                        <h:panelGroup>
+                                            <p:selectOneMenu value="#{bordenproveedor.dordenproveedor_a.obj_ar.cod_articulo}"  
+                                                             panelStyle="width:250px"  
+                                                             filter="true" filterMatchMode="startsWith"    effect="fade" style="width:160px"  required="true" id="f_articulo">  
+                                                <f:selectItem itemLabel="Elegir Opcion " itemValue="" />  
+                                                <f:selectItems value="#{bordenproveedor.cargarArticuloxSolicitudPro}" var="variable" itemLabel="#{variable.cod_articulo} - #{variable.nombre_articulo}" itemValue="#{variable.cod_articulo}" />                                                    
+
+                                            </p:selectOneMenu>
+
+                                        </h:panelGroup> 
+
+
+                                        <h:outputText  value="(*) Fecha De Entrada Material"/>
+                                        <h:panelGroup>
+                                            <p:calendar effect="explode" value="#{bordenproveedor.dordenproveedor_a.fecha_entrada}" required="true"/>
+                                        </h:panelGroup>  
+
+
+                                        <h:outputLabel for="precio_pro" value="(*)Precio Articulo"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bordenproveedor.dordenproveedor_a.precio_articulo}" id="precio_pro"  required="true" title="Formato: 0.0">
+
+                                            </p:inputText>
+                                            <p:tooltip for="precio_pro" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="precio_pro" display="icon" />
+                                        </h:panelGroup>
+
+                                        <p:commandButton value="Registrar" id="savedordenproveedor" actionListener="#{bordenproveedor.doRegistrardordenproveedor}" update="nueva_dordenproveedor"/>     
+                                    </h:panelGrid> 
+
+                                </p:panel>
+
+                            </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+                    <!--LISTAR EMPRESA-->                
+                    <p:tab id="tabListado" title="#{msg.listar}">                            
+                        <p:growl sticky="true" showDetail="true"/><!--MUESTRA MENSAJE DE ERROR-->
+                        <h:form id="form_listar">
+                            <p:panel id="listar_dordenproveedor" header="Listando Orden De Entrada">
+                                <p:dataTable id="dordenproveedorTable" var="pro" value="#{bordenproveedor.listarordenproveedor}" emptyMessage="No se Encontraron" resizableColumns="true" paginator="true" rows="5" rowsPerPageTemplate="10,15,20">
+                                    <f:facet name="header">  
+                                        Lista De Orden De Entrada Material 
+                                    </f:facet> 
+
+                                    <p:column sortBy="#{pro}"  filterBy="#{pro.id_dentrada_materpo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="ID Entrada"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pro.id_dentrada_materpo}"/>
+                                    </p:column>   
+
+                                    <p:column sortBy="#{pro}"  filterBy="#{pro.cantidad_material}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Cantidad Material"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pro.cantidad_material}"/>
+                                    </p:column>      
+
+
+                                    <p:column sortBy="#{pro.obj_por.nombre_proveedor}"  filterBy="#{pro.obj_por.nombre_proveedor}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre Proveedor"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pro.obj_por.nombre_proveedor}"/>
+                                    </p:column> 
+                                    <p:column sortBy="#{pro.obj_ar.nombre_articulo}"  filterBy="#{pro.obj_ar.nombre_articulo}" filterMatchMode="contains">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre Articulo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pro.obj_ar.nombre_articulo}"/>
+                                    </p:column>
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Fecha Entrada"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pro.fecha_entrada}"/>
+                                    </p:column> 
+
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Precio Articulo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{pro.precio_articulo}"/>
+                                    </p:column> 
+
+
+                                    <p:column style="width: 4%">
+                                        <p:commandButton id="selectButton" icon="ui-icon-search" title="Detalles" update=":tabdordenproveedor:form_listar:displaypro" oncomplete="proDialog.show()">
+                                            <f:setPropertyActionListener value="#{pro}" target="#{bordenproveedor.selecteddordenproveedor}"/>                                            
+                                        </p:commandButton>
+
+                                    </p:column> 
+                                </p:dataTable>
+
+                                <p:panel header="Exportar Todos los Datos">
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png"/>
+                                        <p:dataExporter type="xls" target="dordenproveedorjTable" fileName="entrada"/>
+                                    </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png"/>
+                                        <p:dataExporter type="pdf" target="dordenproveedorTable" fileName="entrada"/>
+                                    </h:commandLink>
+                                </p:panel>
+                                <p:dialog header="Detalle De La Entrada Del Articulo" widgetVar="proDialog" resizable="false" id="proDlg" showEffect="fade" hideEffect="explode" modal="false">
+                                    <h:panelGrid id="displaypro" columns="2" cellpadding="4" style="margin: 0 auto;">
+                                        <h:outputText value="Codigo De Entrada:"/>
+                                        <h:outputText value="#{bordenproveedor.selecteddordenproveedor.id_dentrada_materpo}" style="font-weight: bold"/>
+                                        <h:outputText value="Cantida Del Articulo:"/>
+                                        <h:outputText value="#{bordenproveedor.selecteddordenproveedor.obj_ar.cantidad_articulo}" style="font-weight: bold"/>
+                                        <h:outputText value="Detalle Solicitud:"/>
+                                        <h:outputText value="#{bordenproveedor.selecteddordenproveedor.obj_pr.id_detalle_proveedor}" style="font-weight: bold"/>
+                                        <h:outputText value="Codigo Proveedor:"/>
+                                        <h:outputText value="#{bordenproveedor.selecteddordenproveedor.obj_por.id_proveedor}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Proveedor:"/>
+                                        <h:outputText value="#{bordenproveedor.selecteddordenproveedor.obj_por.nombre_proveedor}" style="font-weight: bold"/>
+                                        
+                                        <h:outputText value="Codigo Articulo:"/>
+                                        <h:outputText value="#{bordenproveedor.selecteddordenproveedor.obj_ar.cod_articulo}" style="font-weight: bold"/>
+
+                                        <h:outputText value="Nombre Articulo:"/>
+                                        <h:outputText value="#{bordenproveedor.selecteddordenproveedor.obj_ar.nombre_articulo}" style="font-weight: bold"/>
+
+                                        <h:outputText value="Fecha Salida:"/>
+                                        <h:outputText value="#{bordenproveedor.selecteddordenproveedor.fecha_entrada}" style="font-weight: bold"/>
+
+                                        <h:outputText value="Precio Articulo:"/>
+                                        <h:outputText value="#{bordenproveedor.selecteddordenproveedor.precio_articulo}" style="font-weight: bold"/>
+
+                                    </h:panelGrid>
+                                </p:dialog>                                          
+                            </p:panel>
+                        </h:form>
+                    </p:tab><!-- FIN LISTADO -->
+              
+                </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

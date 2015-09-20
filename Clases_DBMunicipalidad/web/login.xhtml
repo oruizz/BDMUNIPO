@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets" 
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+    <ui:composition template="/WEB-INF/facelets/templates/TemplateLogin.xhtml">            
+            <ui:define name="contentiz">            
+                <h:form>                    
+                    <p:growl  id="estado" sticky="true"  showDetail="true"  />
+                    <center> 
+                    <h:panelGrid columns="2" cellpadding="4">  
+                        <h:outputLabel value="Usuario" />  
+                        <h:panelGroup>
+                            <p:inputText id="user" value="#{bUsuario.nom_user}" required="true" label="Usuario" requiredMessage="Ingrese Usuario">  
+                                <f:validateLength minimum="1" />  
+                            </p:inputText>  
+                        </h:panelGroup>
+                        <h:outputLabel  value="Clave" /> 
+                       <h:panelGroup>
+                           <p:keyboard value="#{bUsuario.clave_user}" password="true" required="true" requiredMessage="Ingrese Contraseña" label="Contraseña" /> 
+                             
+                        </h:panelGroup>
+                        <h:panelGroup> 
+                            <p:commandButton  value="Ingresar"    action="#{bUsuario.loginUsuario()}" global="false" style="margin-left:5px" update="estado"/>                
+                        </h:panelGroup>
+                    </h:panelGrid>  
+                    </center>                        
+               </h:form>                              
+            </ui:define>         
+        </ui:composition>
+    </h:body>
+</html>

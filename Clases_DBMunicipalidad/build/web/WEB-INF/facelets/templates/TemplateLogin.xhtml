@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+         xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core"      
+      xmlns:p= "http://primefaces.org/ui">
+    <h:head>
+         <ui:insert name="encabezado">
+            <ui:include src="/WEB-INF/facelets/templates/encabezado.xhtml"/>
+        </ui:insert>    
+    </h:head>
+   <h:body>
+       <div align="center" cellpadding="0" cellspacing="0" width="1000px" >
+       <p:layout  style="width:1200px;height:760px"  > 
+         <p:layoutUnit styleClass="border" position="north" size="100"  
+                resizable="false" closable="false" collapsible="false" effect="drop" >                      
+          <h:panelGrid styleClass="encabezado"> 
+                 <p:graphicImage value="resources/imagenes/logo_muni.JPG" width="1170" height="85"/>             
+             
+              
+            </h:panelGrid> 
+   
+         
+         </p:layoutUnit>  
+    <p:layoutUnit styleClass="border" position="south" size="40" resizable="true" closable="true" collapsible="true">  
+         <div align="center" class="derechos">
+             <h:outputText value="#{msg.derecho}" />
+             <br><h:outputText  value="#{msg.curso}" /></br>            
+       </div>   
+    </p:layoutUnit>   
+   <p:layoutUnit styleClass="border" position="west"  size="320" header="Autenticacion de Usuario" resizable="true" closable="false" collapsible="true" effect="drop">  
+        <ui:insert name="contentiz"></ui:insert>                   
+    </p:layoutUnit>    
+
+      <p:layoutUnit styleClass="border" position="center">  
+          <h:form>
+                 <p:galleria value="#{bgaleria.imagenes}"  
+                var="player" effect="slide" effectSpeed="1000"  
+            panelWidth="850" panelHeight="390" frameWidth="110" frameHeight="50"  
+            filmstripPosition="top" showCaptions="true" showOverlays="true">                  
+  
+                     <p:graphicImage id="playerImage" value="/resources/imagenes/#{player.nombre_archivo}"/>  
+                       <p:galleriaOverlay title="#{player.descripcion}">  
+                
+                       </p:galleriaOverlay>     
+                </p:galleria>  
+  
+             </h:form>                 
+    </p:layoutUnit>    
+</p:layout>     
+</div>
+    </h:body>
+
+</html>
+

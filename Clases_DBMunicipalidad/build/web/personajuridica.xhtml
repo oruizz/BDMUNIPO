@@ -1,0 +1,327 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+
+
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+                <h:outputText value="Persona Juridica" styleClass="subtitulocabecera"/>
+                <p:tabView id="tabPersona_Juridica">
+                    <p:tab id="tab1" title="Presentacion">                  
+                        <h:form>
+                            <p:growl id="growl" showDetail="true"/>
+                            <p:fieldset legend="#{msg.descripcion}" toggleable="true" toggleSpeed="500">
+                                <p:ajax event="toggle" listener="#{fieldsetBean.handleToggle}" update="growl"/>
+                            </p:fieldset>
+                        </h:form>                    
+                    </p:tab>
+
+
+                    <p:tab id="tab2" title="Registrar Persona Juridica">                  
+                        <p:fieldset legend="Formulario De Registro" >
+                            <h:form id="registrar" >
+                                <p:panel id="nueva_persona" header="#{msg.persojuridica}">
+                                    <p:growl sticky="true" showDetail="true"/>
+                                    <h:panelGrid columns="1">                                                       
+                                        <h:outputLabel for="nombre_persona" value="(*)Nombre De La Persona Juridica"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bPersona.juridica_a.nombre_persona}" id="nombre_persona" required="true" title="Máximo 30 Caracteres"  >
+                                                <f:validateLength minimum="2" maximum="50"/>
+                                       
+                                            </p:inputText>                                                   
+                                            <p:tooltip for="nombre_persona" showEvent="focus" hideEvent="blur"  />
+                                            <p:message for="nombre_persona" display="icon" />
+                                        </h:panelGroup>
+
+                                        <h:outputLabel for="ruc_persona" value="(*)Ruc De La Persona Juridica"/>
+                                        <h:panelGroup>
+                                            <p:inputMask id="ruc_persona" value="#{bPersona.juridica_a.ruc_persona}" mask="99999999999" title="Formato:00000000000" required="true" size="13"/>
+                                            <p:tooltip for="ruc_persona" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="ruc_persona" display="icon"/>
+                                        </h:panelGroup>
+
+
+                                        <h:outputLabel for="apellido_persona" value="(*)Apellido De La Persona Juridica"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bPersona.juridica_a.apellido_persona}" id="apellido_persona" title="Maximo 50 Caracteres">       
+                                            </p:inputText>
+                                            <p:tooltip for="apellido_persona" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="apellido_persona" display="icon"/>
+                                        </h:panelGroup>
+
+                                        <h:outputLabel for="direccion_persona" value="(*)Direccion De La Persona Juridica"/>
+                                        <h:panelGroup>
+                                            <p:inputText value="#{bPersona.juridica_a.direccion_persona}" id="direccion_persona" title="Escriba aqui la direccion">       
+                                            </p:inputText>
+                                            <p:tooltip for="direccion_persona" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="direccion_persona" display="icon"/>
+                                        </h:panelGroup>
+
+                                        <h:outputLabel for="celular_persona" value="Celular De La Persona Juridica" />                            
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bPersona.juridica_a.celular_persona}" mask="(99) 999-9999" id="celular_persona"  title="Formato Celular"/>
+                                            <p:tooltip for="celular_persona" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="celular_persona" display="icon"/>                                          
+                                        </h:panelGroup>  
+
+                                        <h:outputText value="Sexo De La Persona Juridica " /> 
+                                        <p:selectOneMenu value="#{bPersona.juridica_a.sexo_persona}">  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                            <f:selectItem itemLabel="Masculino" itemValue="Masculino" />  
+                                            <f:selectItem itemLabel="Femenino" itemValue="Femenino" />  
+                                        </p:selectOneMenu>  
+
+                                        <h:outputLabel for="edad_persona" value="Edad De La Persona Juridica" />                            
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bPersona.juridica_a.edad_persona}" mask="99" id="edad_persona"  title="Ingrese Edad"/>
+                                            <p:tooltip for="edad_persona" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="edad_persona" display="icon"/>                                          
+                                        </h:panelGroup>  
+                                        
+                                         <h:outputText value="Estado De La Persona Juridica " /> 
+                                         <p:selectOneMenu value="#{bPersona.juridica_a.estado_persona}">  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                            <f:selectItem itemLabel="0 - VIGENTE" itemValue="0" />  
+                                            <f:selectItem itemLabel="1 - NO VIGENTE" itemValue="1" />  
+                                        </p:selectOneMenu>  
+                                        
+
+                                        <p:commandButton value="Registrar" id="savePersona" actionListener="#{bPersona.doregistra_persona_juridica()}" update="nueva_persona"/>                                            
+                                    </h:panelGrid>                                        
+                                </p:panel>
+                            </h:form>
+                        </p:fieldset>                                         
+                    </p:tab>
+                    <!--LISTAR EMPRESA-->                
+                    <p:tab id="tabListado" title="#{msg.listar}">                            
+                        <p:growl sticky="true" showDetail="true"/><!--MUESTRA MENSAJE DE ERROR-->
+                        <h:form id="form_listar">
+                            <p:panel id="listar_personajuridica" header="#{msg.listapers}">
+                                <p:dataTable id="personajuridicaTable" var="per" value="#{bPersona.cargarPersona_Juridica}" emptyMessage="#{msg.persovacia}" paginator="true" rows="5" rowsPerPageTemplate="10,15,20">
+                                    <f:facet name="header">  
+                                        Lista De Personas Juridicas  
+                                    </f:facet> 
+
+                                    <p:column>
+                                        <f:facet name="header">
+                                            <h:outputText value="Codigo"/>
+                                        </f:facet>
+                                        <h:outputText value="#{per.cod_persona}"/>
+                                    </p:column>  
+
+
+                                    <p:column sortBy="#{per.ruc_persona}" filterBy="#{per.ruc_persona}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Ruc"/>
+                                        </f:facet>
+                                        <h:outputText value="#{per.ruc_persona}"/>
+                                    </p:column>  
+                                    <p:column sortBy="#{per.nombre_persona}" filterBy="#{per.nombre_persona}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Nombre"/>
+                                        </f:facet>
+                                        <h:outputText value="#{per.nombre_persona}"/>
+                                    </p:column> 
+                                    <p:column sortBy="#{per.apellido_persona}" filterBy="#{per.apellido_persona}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Apellidos"/>
+                                        </f:facet>
+                                        <h:outputText value="#{per.apellido_persona}"/>
+                                    </p:column> 
+                                    <p:column sortBy="#{per.direccion_persona}" filterBy="#{per.direccion_persona}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Direccion"/>
+                                        </f:facet>
+                                        <h:outputText value="#{per.direccion_persona}"/>
+                                    </p:column> 
+                                    <p:column sortBy="#{per.estado_persona}" filterBy="#{per.estado_persona}">
+                                        <f:facet name="header">
+                                            <h:outputText value="Estado"/>
+                                        </f:facet>
+                                        <h:outputText value="#{per.estado_persona}"/>
+                                    </p:column> 
+                                    
+                                    <p:column style="width: 4%">
+                                        <p:commandButton id="selectButton" icon="ui-icon-search" title="Detalles" update=":tabPersona_Juridica:form_listar:displayper" oncomplete="perDialog.show()">
+                                            <f:setPropertyActionListener value="#{per}" target="#{bPersona.selectedpersojuridica}"/>                                            
+                                        </p:commandButton>
+                                    </p:column> 
+                                </p:dataTable>
+                                <p:panel header="Exportar Todos los Datos">
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}excel.png"/>
+                                        <p:dataExporter type="xls" target="personaTable" fileName="Persona Juridica"/>
+                                    </h:commandLink>
+                                    <h:commandLink>
+                                        <p:graphicImage value="#{msg.ruta_img}pdf.png"/>
+                                        <p:dataExporter type="pdf" target="personaTable" fileName="Persona Juridica"/>
+                                    </h:commandLink>
+                                </p:panel>
+                                <p:dialog header="Detalle De La Persona Juridica" widgetVar="perDialog" resizable="false" id="perDlg" showEffect="fade" hideEffect="explode" modal="false">
+                                    <h:panelGrid id="displayper" columns="2" cellpadding="4" style="margin: 0 auto;">
+                                        <h:outputText value="Codigo Persona Juridica:"/>
+                                        <h:outputText value="#{bPersona.selectedpersojuridica.cod_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Ruc Persona Juridica:"/>
+                                        <h:outputText value="#{bPersona.selectedpersojuridica.ruc_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Nombre Persona Juridica:"/>
+                                        <h:outputText value="#{bPersona.selectedpersojuridica.nombre_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Apellidos Persona Juridica:"/>
+                                        <h:outputText value="#{bPersona.selectedpersojuridica.apellido_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Direccion Persona Juridica:"/>
+                                        <h:outputText value="#{bPersona.selectedpersojuridica.direccion_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Celular Persona Juridica:"/>
+                                        <h:outputText value="#{bPersona.selectedpersojuridica.celular_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Sexo Persona Juridica:"/>
+                                        <h:outputText value="#{bPersona.selectedpersojuridica.sexo_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Edad Persona Juridica:"/>
+                                        <h:outputText value="#{bPersona.selectedpersojuridica.edad_persona}" style="font-weight: bold"/>
+                                        <h:outputText value="Estado Persona Juridica:"/>
+                                        <h:outputText value="#{bPersona.selectedpersojuridica.estado_persona}" style="font-weight: bold"/>
+
+                                    </h:panelGrid>
+                                </p:dialog>                                          
+                            </p:panel>
+                        </h:form>
+                    </p:tab><!-- FIN LISTADO -->
+
+                    <p:tab id="tabEditar" title="#{msg.editar}">
+                        <p:growl sticky="true"  showDetail="true"/>
+                        <h:form id="form_editar2">                 
+                            <p:panel id="editar_PersonaJuridica" header="Edicion Personas Juridicas">                 
+                                <p:dataTable id="PersonaJuridicaTableEdit2"   widgetVar="PersonaJuridicaTableEdit2"
+                                             var="pj" value="#{bPersona.cargarPersona_Juridica}" paginator="true" 
+                                             rows="5"       editable="true"             
+                                             emptyMessage="No Empresas encontradas"
+                                             rowsPerPageTemplate="10,15,20" 
+                                             resizableColumns="true"
+                                             >                                                          
+                                    <p:column headerText="Codigo" footerText="Codigo" sortBy="#{pj.cod_persona}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{pj.cod_persona}" />
+                                    </p:column>
+                                    <p:column headerText="Ruc" footerText="Ruc" sortBy="#{pj.ruc_persona}" filterBy="#{pj.ruc_persona}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{pj.ruc_persona}" />
+
+                                    </p:column>
+
+                                    <p:column headerText="Nombre" footerText="Nombre" sortBy="#{pj.nombre_persona}" filterBy="#{pj.nombre_persona}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{pj.nombre_persona}" />
+                                    </p:column>               
+
+                                    <p:column headerText="Apellidos" footerText="Apellidos" sortBy="#{pj.apellido_persona}" filterBy="#{pj.apellido_persona}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{pj.apellido_persona}" />
+                                    </p:column> 
+
+                                    <p:column  headerText="Direccion" footerText="Direccion" sortBy="#{pj.direccion_persona}" filterBy="#{pj.direccion_persona}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{pj.direccion_persona}" />
+                                    </p:column> 
+
+                                    <p:column  headerText="Celular" footerText="Celular" sortBy="#{pj.celular_persona}" filterBy="#{pj.celular_persona}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{pj.celular_persona}" />
+                                    </p:column>  
+
+                                    <p:column  headerText="Sexo" footerText="Sexo" sortBy="#{pj.sexo_persona}" filterBy="#{pj.sexo_persona}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{pj.sexo_persona}" />
+                                    </p:column>   
+
+                                    <p:column  headerText="Edad" footerText="Edad" sortBy="#{pj.edad_persona}" filterBy="#{pj.edad_persona}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{pj.edad_persona}" />
+                                    </p:column>   
+                                    
+                                    <p:column  headerText="Estado" footerText="Estado" sortBy="#{pj.estado_persona}" filterBy="#{pj.estado_persona}"  filterMatchMode="contains">  
+                                        <h:outputText value="#{pj.estado_persona}" />
+                                    </p:column>  
+
+                                    <p:column style="width:4%" headerText="Opcion" >  
+                                        <p:commandButton id="selectButton2" update=":tabPersona_Juridica:form_actualizar:actualizar_PersonaJuridica2" oncomplete="empDialog2.show()" icon="ui-icon-search" title="Detalles">  
+                                            <f:setPropertyActionListener value="#{pj}" target="#{bPersona.selectedpersojuridica}" />  
+                                        </p:commandButton>  
+                                    </p:column>                   
+                                </p:dataTable>
+                            </p:panel>
+                        </h:form>
+
+                        <h:form id="form_actualizar">                              
+                            <p:dialog header="Actualizando Persona Juridica" widgetVar="empDialog2" resizable="false" id="empDlg2"  
+                                      showEffect="fade" hideEffect="explode" modal="false">    
+                                <p:panel id="actualizar_PersonaJuridica2"> 
+                                    <p:growl sticky="true"  showDetail="true"/>                  
+                                    <h:panelGrid columns="2" cellpadding="4" style="margin:0 auto;">   
+                                        <h:outputText value="Codigo:" />  
+                                        <p:inputText value="#{bPersona.selectedpersojuridica.cod_persona}" style="font-weight:bold" required="true" />    
+                                        
+                                        <h:outputLabel for="ruc_persona" value="(*)Ruc De La Persona Juridica"/>
+                                        <h:panelGroup>
+                                            <p:inputMask id="ruc_persona" value="#{bPersona.selectedpersojuridica.ruc_persona}" mask="99999999999" title="Formato:00000000000" required="true" size="13" style="font-weight:bold"/>
+                                            <p:tooltip for="ruc_persona" showEvent="focus" hideEvent="blur" />
+                                            <p:message for="ruc_persona" display="icon"/>
+                                        </h:panelGroup>
+                                        
+                                        <h:outputText value="Nombre:" />  
+                                        <p:inputText value="#{bPersona.selectedpersojuridica.nombre_persona}" style="font-weight:bold" required="true" > 
+                                            <f:validateLength minimum="2" maximum="30"/>
+                                        </p:inputText>
+                                        
+                                        <h:outputText value="Apellidos:" />  
+                                        <p:inputText value="#{bPersona.selectedpersojuridica.apellido_persona}" style="font-weight:bold" required="true" > 
+                                            <f:validateLength minimum="2" maximum="50"/>
+                                        </p:inputText>
+                                        
+                                        <h:outputText value="Direccion:" />  
+                                        <p:inputText value="#{bPersona.selectedpersojuridica.direccion_persona}" style="font-weight:bold" required="true" > 
+                                             <f:validateLength minimum="2" maximum="50"/>
+                                        </p:inputText>
+                                        
+                                      <h:outputLabel for="celular_persona" value="Celular De La Persona Juridica" />                            
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bPersona.selectedpersojuridica.celular_persona}" mask="(99) 999-9999" id="celular_persona"  title="Formato Celular"/>
+                                            <p:tooltip for="celular_persona" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="celular_persona" display="icon"/>                                          
+                                        </h:panelGroup>  
+                                        
+                                         
+                                        <h:outputText value="Sexo De La Persona Juridica " /> 
+                                         <p:selectOneMenu value="#{bPersona.selectedpersojuridica.sexo_persona}" required="true" >  
+                                            <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                            <f:selectItem itemLabel="Masculino" itemValue="Masculino" />  
+                                            <f:selectItem itemLabel="Femenino" itemValue="Femenino" />  
+                                        </p:selectOneMenu>  
+                                        
+                                        
+                                         <h:outputLabel for="edad_persona" value="Edad De La Persona Juridica" />                            
+                                        <h:panelGroup>
+                                            <p:inputMask value="#{bPersona.selectedpersojuridica.edad_persona}" mask="99" id="edad_persona"  title="Ingrese Edad" required="true"/>
+                                            <p:tooltip for="edad_persona" showEvent="focus" hideEvent="blur" />              
+                                            <p:message for="edad_persona" display="icon"/>                                          
+                                        </h:panelGroup>  
+                                          
+                                        
+                                        <h:outputText value="Estado" /> 
+                                          <p:selectOneMenu value="#{bPersona.selectedpersojuridica.estado_persona}" style="width: 150px;" required="true" >  
+                                         <f:selectItem itemLabel="Eligir Opcion" itemValue="" /> 
+                                          
+                                        <f:selectItem itemLabel="0 - VIGENTE" itemValue="0" />  
+                                        <f:selectItem itemLabel="1 - NO VIGENTE" itemValue="1" /> 
+                                           
+                                       </p:selectOneMenu> 
+                                        <p:commandButton  value="Actualizar" id="updatePersonaJuridica" actionListener="#{bPersona.doActualizarPersonaJuridica()}" update="actualizar_PersonaJuridica2" />
+                                    </h:panelGrid>                      
+                                </p:panel>
+                            </p:dialog>                  
+                        </h:form>
+
+
+
+                    </p:tab>
+
+                </p:tabView>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

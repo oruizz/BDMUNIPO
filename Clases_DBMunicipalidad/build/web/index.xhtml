@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">
+            <ui:define name="content">
+               <center> 
+             <h:form>
+                 <p:galleria value="#{bgaleria.imagenes}"  
+                var="player" effect="slide" effectSpeed="1000"  
+            panelWidth="850" panelHeight="390" frameWidth="110" frameHeight="50"  
+            filmstripPosition="top" showCaptions="true" showOverlays="true">                  
+  
+                     <p:graphicImage id="playerImage" value="/resources/imagenes/#{player.nombre_archivo}"/>  
+                       <p:galleriaOverlay title="#{player.descripcion}">  
+                
+                       </p:galleriaOverlay>     
+                </p:galleria>  
+  
+             </h:form>     
+        </center> 
+                
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

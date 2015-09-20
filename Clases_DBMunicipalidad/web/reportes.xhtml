@@ -1,0 +1,34 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p= "http://primefaces.org/ui"
+      xmlns:ui="http://java.sun.com/jsf/facelets" > 
+    <h:head>         
+    </h:head>
+    <h:body>
+        <ui:composition template="/WEB-INF/facelets/templates/TemplatePagina.xhtml">            
+            <ui:define name="content">
+
+                <h:outputText value="REPORTES"  styleClass="subtitulocabecera"/>  
+                <p:menu style="width: 800px; text-align: left;">             
+                    <p:menuitem value="Reporte: Solicitudes De Persona Juridica Entre Dos Fechas" url="reportesolicitudxempresaxfecha.jsf" />
+                    <p:menuitem value="Reporte: Solicitud De Empresa Entre Dos Fechas" url="repoteDetalleSolicitudxEmpresaFecha.jsf"/>
+                    <p:menuitem value="Reporte: Total De Articulos De Solicitud Por Empresa" url="reporteTotalArticulosSolixEmpresa.jsf" />
+                    <p:menuitem value="Reporte: Total De Solicitudes Empresa Por Responsable" url="ReporteTotalSolicitudEmpresaxResponsable.jsf"/>
+                    <p:menuitem value="Reporte: Articulos Por Solicitud De Empresa Monto Minimo" url="ReporteArticulosxSoliEmpresaxMonto.jsf"/>
+                    <p:menuitem value="Reporte: Ultimas Soliticitudes Por Persona Juridica" url="Reporteultimasxsolicitudxpj.jsf"/>
+                    <p:menuitem value="Reporte: Solicitudes Activas Por Proveedor" url="Reporteactivosxsolicitudxproveedor.jsf"/>
+                    <p:menuitem value="Reporte: Total De Articulos Por Solicitud Persona Juridica" url="ReporteTotalArticulosxSolixPersonaJuridica.jsf"/>
+                    <p:menuitem value="Reporte: Total De Proyecto De La Empresa" url="ReporteTotalproyectoxempresa.jsf"/>
+                    <p:menuitem value="Reporte: Articulos Por Detalle Salida De Material Empresa Entre Fechas" url="reporteArticulosxDsalidaemp.jsf"/>
+                </p:menu> 
+
+
+            </ui:define>  
+        </ui:composition>
+    </h:body>
+
+</html>
+
